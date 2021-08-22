@@ -61,9 +61,9 @@ initServerDvars()
 	level.cmZombieHealthPermanentOverrideValue = getDvarIntDefault( "cmZombieHealthPermanentOverrideValue", 150 );
 	level.cmZombieMaxHealthOverride = getDvarIntDefault( "cmZombieMaxHealthOverride", 0 );
 	level.cmZombieMaxHealthOverrideValue = getDvarIntDefault( "cmZombieMaxHealthOverrideValue" , 150 );
-	level.cmPlayerMaxHealth = getDvarIntDefault( "cmPlayerMaxHealth", 160 );
-	level.player_starting_points = getDvarIntDefault( "cmPlayerStartingPoints", 420 );
-	level.perk_purchase_limit = getDvarIntDefault( "cmPlayerPerkLimit", 9 );
+	level.cmPlayerMaxHealth = getDvarIntDefault( "cmPlayerMaxHealth", 100 );
+	level.player_starting_points = getDvarIntDefault( "cmPlayerStartingPoints", 500 );
+	level.perk_purchase_limit = getDvarIntDefault( "cmPlayerPerkLimit", 4 );
 	level.default_solo_laststandpistol = getDvar( "cmPlayerSoloLaststandWeapon" );
 	level.default_laststandpistol = getDvar( "cmPlayerCoopLaststandWeapon" );
 	level.start_weapon = getDvar( "cmPlayerStartWeapon" );
@@ -75,9 +75,9 @@ initServerDvars()
 	level.cmPowerupNoPowerupDrops = getDvarIntDefault( "cmPowerupNoPowerupDrops", 0 );
 	level.cmLevelDoSpectatorsRespawn = getDvarIntDefault( "cmLevelDoSpectatorsRespawn", 1 );
 	level.zombie_vars[ "spectators_respawn" ] = level.cmLevelDoSpectatorsRespawn;
-	level.cmLevelIntermissionTime = getDvarIntDefault( "cmLevelIntermissionTime", 20 );
+	level.cmLevelIntermissionTime = getDvarIntDefault( "cmLevelIntermissionTime", 0 );
 	level.zombie_vars["zombie_intermission_time"] = level.cmLevelIntermissionTime;
-	level.cmLevelBetweenRoundTime = getDvarIntDefault( "cmLevelBetweenRoundTime", 15 );
+	level.cmLevelBetweenRoundTime = getDvarIntDefault( "cmLevelBetweenRoundTime", 0 );
 	level.zombie_vars["zombie_between_round_time"] = level.cmLevelBetweenRoundTime;
 	level.cmLevelGameStartDelay = getDvarIntDefault( "cmLevelGameStartDelay", 0 );
 	level.zombie_vars[ "game_start_delay" ] = level.cmLevelGameStartDelay;
@@ -521,7 +521,7 @@ init_custom_zm_powerups_gsc_exclusive_dvars()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-//// When a player joins the server 
+//// When a player joins the server (Use "self iprintln" to add messages on join)
 welcome()
 {
     self endon("disconnect");
@@ -545,7 +545,7 @@ welcome()
 	self thread shield_hud();											// Initiates the code for Shield Durability HUD
 }
 
-//// Removes annoying FOG. This is AutisticLulu's preference since I get nauseous when theres fog, not really sure why though.
+//// Removes annoying FOG. This is my personal preference since I get nauseous when theres fog and dof effects, not really sure why though.
 // Credits to teh-bandit
 visuals()
 {
@@ -773,15 +773,15 @@ zone_hud()
 	zone_hud.x += 5;
 	if (level.script == "zm_buried")
 	{
-		zone_hud.y -= 125;
+		zone_hud.y -= 64;
 	}
 	else if (level.script == "zm_tomb")
 	{
-		zone_hud.y -= 160;
+		zone_hud.y -= 80;
 	}
 	else
 	{
-		zone_hud.y -= 100;
+		zone_hud.y -= 50;
 	}
 	zone_hud.fontscale = 1.4;
 	zone_hud.alpha = 0;
