@@ -1,10 +1,10 @@
 THIS IS A FORK OF https://github.com/JezuzLizard/Public-BO2-Mods/tree/master/Configuration%20Mod
 
-Main goal of this fork is to make a mega script compilation that's easy to tweak or to help inexperienced people host their own server with ZERO scripting knowledge
+Main goal of this fork is to make a drag and drop script compilation that's easy to tweak or to help inexperienced people host their own server with ZERO scripting knowledge.
 
 Added some additional scripts, tweaked values and added more comments to the Classic Zombie gamemodes to enhance player experience without removing the BO1/BO2 zombie feeling.
 
-Added features include (Works directly after download if downloading pre-compiled GSC and dedicated_zm.cfg files)
+Added features include (Works directly after download if downloading pre-compiled GSCs and dedicated_zm.cfg files)
 
 * HUD: Zombie Counter
 
@@ -18,7 +18,7 @@ Added features include (Works directly after download if downloading pre-compile
 
 * Visual: Remove FOG and Depth of Field from the map. (I personally get nauseous of these effects, if you want them then disable them inside _clientids.gsc and compile it
 
-* Tweaks: Quick Revive gives a small boost to Health Regeneration
+* Tweaks: Quick Revive gives a small boost to Health Regeneration (Unsure if it actually works correctly at the moment though.)
 
 * Tweaks: Black Ops 4 Zombie Health values (Health doesn't increase after round 35)
 
