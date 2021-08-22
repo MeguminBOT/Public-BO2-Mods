@@ -36,10 +36,11 @@ Quick Credits:
 
     teh-bandit - Shield Durability / BO4 Health Values / FOG and DOF Removal / Quick Revive HP Regen Boost scripts
 
-    Jbleezy - Current zone script
+    Jbleezy - Current zone / Timer scripts
 
     mjkzy - Hitmarkers script
 
     TomasFreeman15 - For improving the Shield Durability by adding correct shield icons to the HUD
 
 For the source code of the scripts I've taken, check the features list.
+If these aren't the original credits for each script function, do a push request with the correct credits, thanks!
