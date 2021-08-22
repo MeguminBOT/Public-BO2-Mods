@@ -31,10 +31,15 @@ Make every script toggle-able through dedicated_zm.cfg without making the server
 If you want FOG enabled, you'll currently have to disable them inside _clientids.gsc and compile it yourself. Will be toggle-able inside dedicated_zm.cfg soon
 
 Quick Credits:
+
 JezuzLizard - The configuration mod
+
 teh-bandit - Shield Durability / BO4 Health Values / FOG and DOF Removal / Quick Revive HP Regen Boost scripts
+
 Jbleezy - Current zone script
+
 mjkzy - Hitmarkers script
+
 TomasFreeman15 - For improving the Shield Durability by adding correct shield icons to the HUD
 
 For the source code of the scripts I've taken, check the features list.
