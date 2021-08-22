@@ -25,3 +25,6 @@ Added features include (Works directly after download if downloading pre-compile
     Tweaks: Black Ops 4 Zombie Health values (Health doesn't increase after round 35)
 
 NOTE: I won't add any scripts that will auto build easter egg stuff for you or grant mod menu hack commands since I consider these cheating
+
+Future goals:
+Make every script toggle-able through dedicated_zm.cfg without making the server unstable.
