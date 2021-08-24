@@ -45,3 +45,4 @@ Quick Credits:
 For the source code of the scripts I've taken, check the features list.
 If these aren't the original credits for each script function, do a push request with the correct credits, thanks!
 
+If you're new and find all the text overwhelming when opening up the cfg file or decompiled gsc. Then download and use Notepad++ instead and hover over the language tab inside the program, navigate to C and select C# or C++. Now most functions should be colour coded and easier to lookthrough.
