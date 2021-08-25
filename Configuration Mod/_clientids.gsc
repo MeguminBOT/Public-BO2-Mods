@@ -14,6 +14,7 @@
 init()
 {
 	thread initServerDvars(); // Initialize server DVars to be read from dedicated_zm.cfg
+	thread high_round_tracker(); // Initialize Highest Round Tracker
     level thread drawZombiesCounter(); // Initialize Zombie Counter HUD Overlay
 	precacheshader("damage_feedback"); // Precache shader for Shield Durability HUD Overlay
 	precacheshader("zm_riotshield_tomb_icon"); // Precache shader for Shield Durability HUD Overlay
@@ -198,6 +199,7 @@ onplayerconnect()
 	{
 		level waittill( "connected", player );
 		player thread onplayerspawned();
+		player thread high_round_info();
 	}
 }
 
@@ -211,10 +213,10 @@ onplayerspawned()
 		self._retain_perks = getDvarIntDefault( "cmPlayerRetainPerks", 0 );
 		if ( !isDefined( self.cmIsFirstSpawn ) || !self.cmIsFirstSpawn )
 		{
-			self.cmIsFirstSpawn = 1;								// 
-			self thread watch_for_respawn();						// 
-			self.health = level.cmPlayerMaxHealth; 					// Links together with level.cmPlayerMaxHealth for compability reasons
-			self.maxHealth = self.health; 							// Links together with self.health for compability reasons
+			self.cmIsFirstSpawn = 1;								// Is this the first time the player has spawnned?
+			self thread watch_for_respawn();						// Waits for respawn
+			self.health = level.cmPlayerMaxHealth; 					// (UNSURE) Links together with level.cmPlayerMaxHealth for compability reasons
+			self.maxHealth = self.health; 							// (UNSURE) Links together with self.health for compability reasons
 			self setMaxHealth( level.cmPlayerMaxHealth );			// Calls for Health values from initServerDvars() which then asks for cmPlayerMaxHealth inside dedicated_zm.cfg
 			self thread timer_hud();								// Adds the Timer HUD element on player spawn
 			self thread zone_hud();									// Adds the Zone HUD element on player spawn
@@ -312,7 +314,7 @@ disable_specific_powerups()
 	}
 }
 
-// Dont touch these, configure these inside dedicated_zm.cfg instead
+// Dont touch these
 disable_all_powerups()
 {
 	if ( level.cmPowerupNoPowerupDrops )
@@ -321,7 +323,7 @@ disable_all_powerups()
 	}
 }
 
-// Dont touch these, configure these inside dedicated_zm.cfg instead
+// Dont touch these
 zombies_always_drop_powerups()
 {
 	if ( !level.cmPowerupAlwaysDrop )
@@ -380,7 +382,7 @@ zombie_health_cap_override()
 	}
 }
 
-// Dont touch these, configure these inside dedicated_zm.cfg instead
+// Dont touch these
 zombie_spawn_delay_fix()
 {
 	if ( level.cmZombieSpawnRateLocked )
@@ -415,7 +417,7 @@ zombie_spawn_delay_fix()
 	}
 }
 
-// Dont touch these, configure these inside dedicated_zm.cfg instead
+// Dont touch these
 zombie_speed_fix()
 {
 	if ( level.cmZombieMoveSpeedLocked )
@@ -432,7 +434,7 @@ zombie_speed_fix()
 	}
 }
 
-// Dont touch these, configure these inside dedicated_zm.cfg instead
+// Dont touch these
 zombie_speed_override()
 {
 	if ( !level.cmZombieMoveSpeedLocked )
@@ -446,7 +448,7 @@ zombie_speed_override()
 	}
 }
 
-// Dont touch these, configure these inside dedicated_zm.cfg instead
+// Dont touch these
 zombie_speed_cap_override()
 {
 	if ( !level.cmZombieMoveSpeedCap )
@@ -463,7 +465,7 @@ zombie_speed_cap_override()
 	}
 }
 
-// Dont touch these, configure these inside dedicated_zm.cfg instead
+// Dont touch these
 watch_for_respawn()
 {
 	self endon( "disconnect" );
@@ -526,20 +528,17 @@ welcome()
 {
     self endon("disconnect");
     self waittill("spawned_player");
-//  wait 7;
-//	self iprintln(^7 Increased perk limit to 9 perks");
-//	wait 5;
+	wait 5;
+//	self iprintln("^7Increased perk limit to 9 perks");
 //	self iprintln("^3Fog ^7and ^3Depth of Field ^7is disabled on this server");
 //	self iprintln("^7HUD Addons: ^3Zombie Counter^7, ^3Shield Durability ^7, ^3Hitmarkers, ^3Timer ^7and ^3Zone Names ^7enabled");
 //	wait 5; 
-//	self iprintln("^3Black Ops 3 Player Health ^7enabled, you can take one extra hit without Juggernog");
-//	self iprintln("^3Black Ops 4 Zombie Health ^7enabled, Zombie health is capped at 11272 on round 35 and onwards");
-//	wait 5;
 //	self iprintln("^3Quick Revive ^7now grants a small boost to health regeneration");
 //	self iprintln("^3Revive Trigger Radius ^7increased from 75 yards to 125 yards");
-//	self iprintln("^7Added 15 seconds delay between every round for Zombies to spawn to prevent weird server crashes");
+//	self iprintln("^7Added 5 seconds delay between every round for Zombies to spawn to prevent weird server crashes");
 //	wait 5;
-//	self iprintln("^7THERE IS ^1NO ^5CHEAT OR ^5CONSOLE COMMANDS 7^ENABLED ON THIS SERVER");
+//	self iprintln("^3Black Ops 3 Player Health ^7enabled, you can take one extra hit without Juggernog");
+//	self iprintln("^3Black Ops 4 Zombie Health ^7enabled, Zombie health is capped at 11272 on round 35 and onwards");
 	self thread visuals();
 	level thread bo4zombiehealth();										// Initiates Black Ops 3/4 zombie health values
 	self thread shield_hud();											// Initiates the code for Shield Durability HUD
@@ -549,14 +548,14 @@ welcome()
 // Credits to teh-bandit
 visuals()
 {
-	self setClientDvar("r_fog", 0);										// Should FOG be enabled? (0 = No, 1 = Yes)
-	self setClientDvar("r_dof_enable", 0);								// Should Depth of Field be enabled? (0 = No, 1 = Yes)
-	self setClientDvar("r_lodBiasRigid", -1000);						//
-	self setClientDvar("r_lodBiasSkinned", -1000);						//
-	self setClientDvar("r_lodScaleRigid", 1);							//
-	self setClientDvar("r_lodScaleSkinned", 1);							//
-	self useservervisionset(1);											//
-	self setvisionsetforplayer("remote_mortar_enhanced", 0);			//
+	self setClientDvar("r_fog", 0);										// Should FOG be enabled? (1 = Yes, 0 = No) (Default = 1)
+	self setClientDvar("r_dof_enable", 0);								// Should Depth of Field be enabled? (1 = Yes, 0 = No) (Default = 1)
+	self setClientDvar("r_lodBiasRigid", -1000);						// (1 = Yes, 0 = No) Default = 0
+	self setClientDvar("r_lodBiasSkinned", -1000);						// (1 = Yes, 0 = No) Default = 0
+	self setClientDvar("r_lodScaleRigid", 1);							// (1 = Yes, 0 = No) Default = 1
+	self setClientDvar("r_lodScaleSkinned", 1);							// (1 = Yes, 0 = No) Default = 1
+	self useservervisionset(1);											// (1 = Yes, 0 = No) Default = 1
+	self setvisionsetforplayer("remote_mortar_enhanced", 0);			// (1 = Yes, 0 = No) Default = 0
 }
 
 //// Zombie health does not increase past round 35, like in Black Ops 3/4
@@ -767,21 +766,21 @@ zone_hud()
 
 	zone_hud = newClientHudElem(self);
 	zone_hud.alignx = "left";
-	zone_hud.aligny = "top";
+	zone_hud.aligny = "bottom";
 	zone_hud.horzalign = "user_left";
 	zone_hud.vertalign = "user_bottom";
 	zone_hud.x += 5;
 	if (level.script == "zm_buried")
 	{
-		zone_hud.y -= 64;
+		zone_hud.y -= 125;
 	}
 	else if (level.script == "zm_tomb")
 	{
-		zone_hud.y -= 80;
+		zone_hud.y -= 160;
 	}
 	else
 	{
-		zone_hud.y -= 50;
+		zone_hud.y -= 100;
 	}
 	zone_hud.fontscale = 1.4;
 	zone_hud.alpha = 0;
@@ -1818,4 +1817,141 @@ get_zone_name()
 	}
 
 	return name;
+}
+
+//// Round Record Tracker
+// Credits to Cahz
+high_round_tracker()
+{
+	thread high_round_info_giver();
+	gamemode = gamemodeName( getDvar( "ui_gametype" ) );
+	map = mapName( level.script );
+	if( level.script == "zm_transit" && getDvar( "ui_gametype" ) == "zsurvival" )
+		map = startLocationName( getDvar( "ui_zm_mapstartlocation" ) );
+	//file handling//
+	level.basepath = getDvar("fs_basepath") + "/" + getDvar("fs_basegame") + "/";
+	path = level.basepath + "/logs/" + map + gamemode + "HighRound.txt";
+	file = fopen(path, "r");
+	text = fread(file);
+	fclose(file);
+	//end file handling//
+	highroundinfo = strToK( text, ";" );
+	level.HighRound = int( highroundinfo[ 0 ] );
+	level.HighRoundPlayers = highroundinfo[ 1 ];
+	for ( ;; )
+	{
+		level waittill ( "end_game" );
+		if ( level.round_number > level.HighRound )
+		{
+			level.HighRoundPlayers = "";
+			players = get_players();
+			for ( i = 0; i < players.size; i++ )
+			{
+				if( level.HighRoundPlayers == "" )
+				{
+					level.HighRoundPlayers = players[i].name;
+				}
+				else
+				{
+					level.HighRoundPlayers = level.HighRoundPlayers + "," + players[i].name;
+				}
+			}
+			foreach( player in level.players )
+			{
+				player tell( "New Record: ^1" + level.round_number );
+				player tell( "Set by: ^1" + level.HighRoundPlayers );
+			}
+			log_highround_record( level.round_number + ";" + level.HighRoundPlayers );
+		}
+	}
+}
+
+log_highround_record( newRecord )
+{
+	gamemode = gamemodeName( getDvar( "ui_gametype" ) );
+	map = mapName( level.script );
+	if( level.script == "zm_transit" && getDvar( "ui_gametype" ) == "zsurvival" )
+		map = startLocationName( getDvar( "ui_zm_mapstartlocation" ) );
+	level.basepath = getDvar("fs_basepath") + "/" + getDvar("fs_basegame") + "/";
+	path = level.basepath + "/logs/" + map + gamemode + "HighRound.txt";
+	file = fopen( path, "w" );
+	fputs( newRecord, file );
+	fclose( file );
+}
+
+startLocationName( location )
+{
+	if( location == "cornfield" )
+		return "Cornfield";
+	else if( location == "diner" )
+		return "Diner";
+	else if( location == "farm" )
+		return "Farm";
+	else if( location == "power" )
+		return "Power";
+	else if( location == "town" )
+		return "Town";
+	else if( location == "transit" )
+		return "BusDepot";
+	else if( location == "tunnel" )
+		return "Tunnel";
+}
+
+mapName( map )
+{
+	if( map == "zm_buried" )
+		return "Buried";
+	else if( map == "zm_highrise" )
+		return "DieRise";
+	else if( map == "zm_prison" )
+		return "Motd";
+	else if( map == "zm_nuked" )
+		return "Nuketown";
+	else if( map == "zm_tomb" )
+		return "Origins";
+	else if( map == "zm_transit" )
+		return "Tranzit";
+	return "NA";
+}
+
+gamemodeName( gamemode )
+{
+	if( gamemode == "zstandard" )
+		return "Standard";
+	else if( gamemode == "zclassic" )
+		return "Classic";
+	else if( gamemode == "zsurvival" )
+		return "Survival";
+	else if( gamemode == "zgrief" )
+		return "Grief";
+	else if( gamemode == "zcleansed" )
+		return "Turned";
+	return "NA";
+}
+
+high_round_info_giver()
+{
+	highroundinfo = 1;
+	roundmultiplier = 5;
+	level endon( "end_game" );
+	while( 1 )
+	{	
+		level waittill( "start_of_round" );
+		if( level.round_number == ( highroundinfo * roundmultiplier ))
+		{
+			highroundinfo++;
+			foreach( player in level.players )
+			{
+				player tell( "Server Highest Round: ^1" + level.HighRound );
+				player tell( "Record set by: ^1" + level.HighRoundPlayers );
+			}
+		}
+	}
+}
+
+high_round_info()
+{
+	wait 6;
+	self tell( "Server Highest Round: ^1" + level.HighRound );
+	self tell( "Record set by: ^1" + level.HighRoundPlayers );
 }
