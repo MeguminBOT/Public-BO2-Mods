@@ -1,3 +1,5 @@
+NOTE: Pre-compiled folder contains several required dependencies that you'll need even if you decide to compile it by yourself
+
 Public BO2 Mods For Plutonium T6
 
 THIS IS A FORK OF https://github.com/JezuzLizard/Public-BO2-Mods/tree/master/Configuration%20Mod
@@ -17,6 +19,8 @@ Added features and include (Works directly after download if downloading pre-com
     HUD: Names for different locations on the map. -- //Credits to Jbleezy: https://github.com/Jbleezy/BO2-Reimagined
 
     HUD: Hitmarkers -- //Credits to mjkzy: https://github.com/mjkzy/BO2-ZM-Hitmarkers
+    
+    HUD: Highest Round Tracker -- //Credits to Cahz: https://forum.plutonium.pw/topic/3649/release-zm-highest-round-tracker-updated-3-13-2020
 
     Visual: Remove FOG and Depth of Field from the map. -- //Credits to teh-bandit: https://github.com/teh-bandit/bo2-scripts 
 
@@ -41,6 +45,8 @@ Quick Credits:
     mjkzy - Hitmarkers script
 
     TomasFreeman15 - For improving the Shield Durability by adding correct shield icons to the HUD
+    
+    Cahz - Highest Round Tracker
 
 For the source code of the scripts I've taken, check the features list.
 If these aren't the original credits for each script function, do a push request with the correct credits, thanks!
