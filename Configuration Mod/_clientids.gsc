@@ -542,6 +542,9 @@ welcome()
 	self thread visuals();
 	level thread bo4zombiehealth();										// Initiates Black Ops 3/4 zombie health values
 	self thread shield_hud();											// Initiates the code for Shield Durability HUD
+	self thread inspect();
+	self thread drop();
+	self thread quickrevive();
 }
 
 //// Removes annoying FOG. This is my personal preference since I get nauseous when theres fog and dof effects, not really sure why though.
@@ -1954,4 +1957,57 @@ high_round_info()
 	wait 6;
 	self tell( "Server Highest Round: ^1" + level.HighRound );
 	self tell( "Record set by: ^1" + level.HighRoundPlayers );
+}
+
+//// Adds the ability to drop your weapon by holding down the "Melee" button
+// Credits to teh-bandit
+drop()
+{
+	level endon("end_game");
+	self endon("disconnect");
+	for (;;) 
+	{
+		if (self meleebuttonpressed()) 
+		{
+			duration = 0;
+			while (self meleebuttonpressed()) 
+			{
+				duration += 1;
+				if (duration == 25) 
+				{
+					weap = self getCurrentWeapon();
+					self dropItem(weap);
+					break;
+				}
+				wait 0.05;
+			}
+		}
+		wait 0.05;
+	}
+}
+
+//// Adds the ability to inspect your weapon by holding down the "Use/Interact" button
+// Credits to teh-bandit
+inspect()
+{
+	level endon("end_game");
+	self endon("disconnect");
+	for (;;) 
+	{
+		if (self usebuttonpressed()) 
+		{
+			duration = 0;
+			while (self usebuttonpressed()) 
+			{
+				duration += 1;
+				if (duration == 25) 
+				{
+					self initialweaponraise(self getcurrentweapon());
+					break;
+				}
+				wait 0.05;
+			}
+		}
+		wait 0.05;
+	}
 }
