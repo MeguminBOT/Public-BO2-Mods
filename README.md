@@ -1,4 +1,5 @@
 **NOTE: Pre-compiled folder contains several required dependencies that you'll need even if you decide to compile it by yourself**
+Drag 'N' Drop install available here: https://github.com/MeguminBOT/Public-BO2-Mods/releases
 
 Public BO2 Mods For Plutonium T6
 
