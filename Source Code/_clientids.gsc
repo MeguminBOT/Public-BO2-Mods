@@ -215,11 +215,14 @@ onplayerspawned()
 		{
 			self.cmIsFirstSpawn = 1;								// Is this the first time the player has spawnned?
 			self thread watch_for_respawn();						// Waits for respawn
-			self.health = level.cmPlayerMaxHealth; 					// (UNSURE) Links together with level.cmPlayerMaxHealth for compability reasons
-			self.maxHealth = self.health; 							// (UNSURE) Links together with self.health for compability reasons
+			self.health = level.cmPlayerMaxHealth; 					// (UNSURE) Links together with level.cmPlayerMaxHealth
+			self.maxHealth = self.health; 							// (UNSURE) Links together with self.health
 			self setMaxHealth( level.cmPlayerMaxHealth );			// Calls for Health values from initServerDvars() which then asks for cmPlayerMaxHealth inside dedicated_zm.cfg
 			self thread timer_hud();								// Adds the Timer HUD element on player spawn
 			self thread zone_hud();									// Adds the Zone HUD element on player spawn
+			self thread health_bar_hud();							// Adds the Health Bar HUD element on player spawn
+			self disable_melee_lunge();								// Disable Melee lunge
+			self enable_friendly_fire();							// Enable Friendly Fire (You can't damage your allies but now you can shoot through them!)
 		}
 	}
 }
@@ -528,66 +531,18 @@ welcome()
 {
     self endon("disconnect");
     self waittill("spawned_player");
+	self thread visuals();												// Executes Remove Fog and Dof on spawn
+	level thread bo4zombiehealth();										// Executes Black Ops 3/4 zombie health values
+	self thread shield_hud();											// Executes the code for Shield Durability HUD
+	self thread setlatepoints();										// Executes the code for Bonus Points if players join later in the game.
+	self thread quickrevive();											// Executes tweaks for Quick Revive 
+	//self thread inspect();											// Executes the code for Inspect Weapon
+	self thread drop();													// Executes the code for Drop Weapon
 	wait 5;
-//	self iprintln("^7Increased perk limit to 9 perks");
-//	self iprintln("^3Fog ^7and ^3Depth of Field ^7is disabled on this server");
-//	self iprintln("^7HUD Addons: ^3Zombie Counter^7, ^3Shield Durability ^7, ^3Hitmarkers, ^3Timer ^7and ^3Zone Names ^7enabled");
-//	wait 5; 
-//	self iprintln("^3Quick Revive ^7now grants a small boost to health regeneration");
-//	self iprintln("^3Revive Trigger Radius ^7increased from 75 yards to 125 yards");
-//	self iprintln("^7Added 5 seconds delay between every round for Zombies to spawn to prevent weird server crashes");
-//	wait 5;
-//	self iprintln("^3Black Ops 3 Player Health ^7enabled, you can take one extra hit without Juggernog");
-//	self iprintln("^3Black Ops 4 Zombie Health ^7enabled, Zombie health is capped at 11272 on round 35 and onwards");
-	self thread visuals();
-	level thread bo4zombiehealth();										// Initiates Black Ops 3/4 zombie health values
-	self thread shield_hud();											// Initiates the code for Shield Durability HUD
-	self thread inspect();
-	self thread drop();
-	self thread quickrevive();
+	//	self iprintln("SET YOUR MESSAGE HERE");
+	//	self iprintln("SET YOUR MESSAGE HERE2");
+
 }
-
-//// Removes annoying FOG. This is my personal preference since I get nauseous when theres fog and dof effects, not really sure why though.
-// Credits to teh-bandit
-visuals()
-{
-	self setClientDvar("r_fog", 0);										// Should FOG be enabled? (1 = Yes, 0 = No) (Default = 1)
-	self setClientDvar("r_dof_enable", 0);								// Should Depth of Field be enabled? (1 = Yes, 0 = No) (Default = 1)
-	self setClientDvar("r_lodBiasRigid", -1000);						// (1 = Yes, 0 = No) Default = 0
-	self setClientDvar("r_lodBiasSkinned", -1000);						// (1 = Yes, 0 = No) Default = 0
-	self setClientDvar("r_lodScaleRigid", 1);							// (1 = Yes, 0 = No) Default = 1
-	self setClientDvar("r_lodScaleSkinned", 1);							// (1 = Yes, 0 = No) Default = 1
-	self useservervisionset(1);											// (1 = Yes, 0 = No) Default = 1
-	self setvisionsetforplayer("remote_mortar_enhanced", 0);			// (1 = Yes, 0 = No) Default = 0
-}
-
-//// Zombie health does not increase past round 35, like in Black Ops 3/4
-// Credits to teh-bandit
-bo4zombiehealth()
-{
-	level endon("end_game");
-	self endon("disconnect");
-	for(;;)
-	{
-		level waittill("start_of_round");
-		if(level.zombie_health > 11272)
-		{
-			level.zombie_health = 11272;
-		}
-	}
-}
-
-//////// CURRENTLY BROKEN //////// 
-//// Gives a set amount of money to people joining late
-// Credits to Ashton Biehl
-//setlatepoints()
-
-//{
-//		if(level.round_number >= 5 && self.score < 2500) // You can change the round and money to your liking.
-//			self.score = 2500;
-//	        else if(level.round_number >= 10 && self.score < 5000) // You can change the round and money to your liking.
-//			self.score = 5000; 
-//}
 
 //// Adds a HUD element showing how many zombies are left
 // Credits to *INSERT NAME HERE*
@@ -605,22 +560,6 @@ drawZombiesCounter()
         level.zombiesCounter setValue( enemies );
         wait 0.05;
     }
-}
-
-//// Quick Revive regenerates health
-// Credits to teh-bandit
-quickrevive()
-{
-	level endon("end_game");
-	self endon("disconnect");
-	for (;;)
-	{
-		if (self hasperk("specialty_quickrevive") && self.health < self.maxHealth)
-		{
-			self.health += 1;
-		}
-		wait 0.1;
-	}
 }
 
 //// Adds a HUD element showing how much durability your Zombie Shield have
@@ -678,6 +617,54 @@ shield_hud()
 		{
 			shield_text.alpha = 0;
 		}
+	}
+}
+
+//// Adds a HUD element showing player health.
+// Credits to Jbleezy
+health_bar_hud()
+{
+	self endon("disconnect");
+
+	flag_wait( "initial_blackscreen_passed" );
+
+	health_bar = self createprimaryprogressbar();
+	health_bar setpoint(undefined, "TOP", 0, -27.5);
+	health_bar.hidewheninmenu = 1;
+	health_bar.bar.hidewheninmenu = 1;
+	health_bar.barframe.hidewheninmenu = 1;
+	health_bar_text = self createprimaryprogressbartext();
+	health_bar_text setpoint(undefined, "TOP", 0, -15);
+	health_bar_text.hidewheninmenu = 1;
+
+	while (1)
+	{
+		if (isDefined(self.e_afterlife_corpse))
+		{
+			if (health_bar.alpha != 0)
+			{
+				health_bar.alpha = 0;
+				health_bar.bar.alpha = 0;
+				health_bar.barframe.alpha = 0;
+				health_bar_text.alpha = 0;
+			}
+			
+			wait 0.05;
+			continue;
+		}
+
+		if (health_bar.alpha != 1)
+		{
+			health_bar.alpha = 1;
+			health_bar.bar.alpha = 1;
+			health_bar.barframe.alpha = 1;
+			health_bar_text.alpha = 1;
+		}
+
+		health_bar updatebar(self.health / self.maxhealth);
+		health_bar_text setvalue(self.health);
+
+		wait 0.05;
 	}
 }
 
@@ -1823,6 +1810,7 @@ get_zone_name()
 }
 
 //// Round Record Tracker
+// NOTE: Needs gsc-utils.dll to be installed in ~\t6r\data\plugins to work
 // Credits to Cahz
 high_round_tracker()
 {
@@ -1959,6 +1947,63 @@ high_round_info()
 	self tell( "Record set by: ^1" + level.HighRoundPlayers );
 }
 
+//// Removes annoying FOG. This is my personal preference since I get nauseous when theres fog and dof effects, not really sure why though.
+// Credits to teh-bandit
+visuals()
+{
+	self setClientDvar("r_fog", 0);										// Should FOG be enabled? (1 = Yes, 0 = No) (Default = 1)
+	self setClientDvar("r_dof_enable", 0);								// Should Depth of Field be enabled? (1 = Yes, 0 = No) (Default = 1)
+	self setClientDvar("r_lodBiasRigid", -1000);						// (1 = Yes, 0 = No) Default = 0
+	self setClientDvar("r_lodBiasSkinned", -1000);						// (1 = Yes, 0 = No) Default = 0
+	self setClientDvar("r_lodScaleRigid", 1);							// (1 = Yes, 0 = No) Default = 1
+	self setClientDvar("r_lodScaleSkinned", 1);							// (1 = Yes, 0 = No) Default = 1
+	self useservervisionset(1);											// (1 = Yes, 0 = No) Default = 1
+	self setvisionsetforplayer("remote_mortar_enhanced", 0);			// (1 = Yes, 0 = No) Default = 0
+}
+
+//// Zombie health does not increase past round 35, like in Black Ops 3/4
+// Credits to teh-bandit
+bo4zombiehealth()
+{
+	level endon("end_game");
+	self endon("disconnect");
+	for(;;)
+	{
+		level waittill("start_of_round");
+		if(level.zombie_health > 11272)
+		{
+			level.zombie_health = 11272;
+		}
+	}
+}
+
+//// Gives a set amount of money to people joining late
+// Credits to Ashton Biehl
+setlatepoints()
+
+{
+		if(level.round_number >= 5 && self.score < 2500) // You can change the round and money to your liking.
+			self.score = 2500;
+	        else if(level.round_number >= 15 && self.score < 5000) // You can change the round and money to your liking.
+			self.score = 5000; 
+}
+
+//// Quick Revive regenerates health
+// Credits to teh-bandit
+quickrevive()
+{
+	level endon("end_game");
+	self endon("disconnect");
+	for (;;)
+	{
+		if (self hasperk("specialty_quickrevive") && self.health < self.maxHealth)
+		{
+			self.health += 1;
+		}
+		wait 0.1;
+	}
+}
+
 //// Adds the ability to drop your weapon by holding down the "Melee" button
 // Credits to teh-bandit
 drop()
@@ -1986,28 +2031,42 @@ drop()
 	}
 }
 
+//// ** CURRENTLY DISABLED DUE TO BEING BUGGY**
 //// Adds the ability to inspect your weapon by holding down the "Use/Interact" button
 // Credits to teh-bandit
-inspect()
+//inspect()
+//{
+//	level endon("end_game");
+//	self endon("disconnect");
+//	for (;;) 
+//	{
+//		if (self usebuttonpressed()) 
+//		{
+//			duration = 0;
+//			while (self usebuttonpressed()) 
+//			{
+//				duration += 1;
+//				if (duration == 25) 
+//				{
+//					self initialweaponraise(self getcurrentweapon());
+//					break;
+//				}
+//				wait 0.05;
+//			}
+//		}
+//		wait 0.05;
+//	}
+//}
+
+
+//// Removes two super annoying things that usually kills you in later rounds. 
+// Credits to Jbleezy
+enable_friendly_fire()
 {
-	level endon("end_game");
-	self endon("disconnect");
-	for (;;) 
-	{
-		if (self usebuttonpressed()) 
-		{
-			duration = 0;
-			while (self usebuttonpressed()) 
-			{
-				duration += 1;
-				if (duration == 25) 
-				{
-					self initialweaponraise(self getcurrentweapon());
-					break;
-				}
-				wait 0.05;
-			}
-		}
-		wait 0.05;
-	}
+	setDvar( "g_friendlyfireDist", "0" );
+}
+
+disable_melee_lunge()
+{
+	setDvar( "aim_automelee_enabled", 0 );
 }
