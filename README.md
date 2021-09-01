@@ -1,6 +1,7 @@
 Want to test all the features added here? Then open Plutonium BO2 and join the following server: 
-***EU Nordic | PotHouse Public [MapRotate/NO BANK]
 
+**EU Nordic | PotHouse Public [MapRotate/NO BANK]
+**
 
 THIS IS A FORK OF https://github.com/JezuzLizard/Public-BO2-Mods/tree/master/Configuration%20Mod
 
