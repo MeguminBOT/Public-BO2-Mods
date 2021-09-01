@@ -1,10 +1,10 @@
-**NOTE: Pre-compiled folder contains several required dependencies that you'll need even if you decide to compile it by yourself**
-
-Public BO2 Mods For Plutonium T6
-
 THIS IS A FORK OF https://github.com/JezuzLizard/Public-BO2-Mods/tree/master/Configuration%20Mod
 
-Main goal of this fork is to make a mega script compilation that's easy to tweak or to help inexperienced people host their own server with ZERO scripting knowledge
+**NOTE: Pre-compiled folder contains several required dependencies that you'll need even if you decide to compile it by yourself.**
+Drag 'N' Drop install available here: https://github.com/MeguminBOT/Public-BO2-Mods/releases
+
+
+Main goal of this fork is to make a script compilation that's easy to tweak or to help inexperienced people host their own server with ZERO scripting knowledge
 
 Added some additional scripts, tweaked values and added more comments to the Classic Zombie gamemodes to enhance player experience without removing the BO1/BO2 zombie feeling.
 
@@ -30,7 +30,7 @@ Added some additional scripts, tweaked values and added more comments to the Cla
     
     Feature: Drop your weapon on the ground by holding down the "Melee" button for few seconds -- //Credits to teh-bandit: https://github.com/teh-bandit/bo2-scripts
     
-    Feature: Inspect your weapon on the ground by holding down the "uSE" button for few seconds -- //Credits to teh-bandit: https://github.com/teh-bandit/bo2-scripts
+    Feature: Inspect your weapon by holding down the "uSE" button for few seconds -- //Credits to teh-bandit: https://github.com/teh-bandit/bo2-scripts
 
 NOTE: I won't add any scripts that will auto build easter egg stuff for you or grant mod menu hack commands since I consider these cheating
 
