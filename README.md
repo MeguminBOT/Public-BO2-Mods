@@ -1,18 +1,27 @@
-Want to test all the features added here? Then open Plutonium BO2 and join the following server: 
-
-**EU Nordic | PotHouse Public [MapRotate/NO BANK]
-**
+# Introduction
 
 THIS IS A FORK OF https://github.com/JezuzLizard/Public-BO2-Mods/tree/master/Configuration%20Mod
 
 **NOTE: Pre-compiled folder contains several required dependencies that you'll need even if you decide to compile it by yourself.**
+
 Drag 'N' Drop install available here: https://github.com/MeguminBOT/Public-BO2-Mods/releases
 
 
-Main goal of this fork is to make a script compilation that's easy to tweak or to help inexperienced people host their own server with ZERO scripting knowledge
 
-Added some additional scripts, tweaked values and added more comments to the Classic Zombie gamemodes to enhance player experience without removing the BO1/BO2 zombie feeling.
+If you want to test all the features added here, Then open Plutonium BO2 and join the following server: 
 
+**EU Nordic | PotHouse Public [MapRotate/NO BANK]**
+It's up almost 24/7
+
+
+# The two main goals of this fork:
+
+**_1. A script compilation that's easy to tweak or to help inexperienced people host their own server with ZERO scripting knowledge_**
+
+**_2. If used out of the box with no tweaking then it replicates a Harder and more challenging Zombies experience with B01 feeling by removing the Bank._**
+
+
+# What's added?
 **Added GSC features/Tweaks List** (Works directly after download if downloading pre-compiled GSC and dedicated_zm.cfg files)
 
     HUD: Zombie Counter -- //Credits ?? Not sure where I got it from in the first place.
