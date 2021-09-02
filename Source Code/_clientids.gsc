@@ -1,25 +1,26 @@
 ﻿//Include the required libraries for your scripts.
-#include maps\mp\_utility;
 #include common_scripts\utility;
+#include maps\mp\_utility;
 #include maps\mp\gametypes_zm\_hud_util;
 #include maps\mp\gametypes_zm\_hud_message;
-#include maps\mp\zombies\_zm_utility;
 #include maps\mp\zombies\_zm;
+#include maps\mp\zombies\_zm_utility;
 #include maps\mp\zombies\_zm_stats;
-#include maps\mp\zombies\_zm_perks;
-#include maps\mp\zombies\_zm_audio;
 #include maps\mp\zombies\_zm_score;
+#include maps\mp\zombies\_zm_audio;
+#include maps\mp\zombies\_zm_perks;
+#include maps/mp/zombies/_zm_chugabud;
 
 // Initialize the code
 init()
 {
-	thread initServerDvars(); // Initialize server DVars to be read from dedicated_zm.cfg
-	thread high_round_tracker(); // Initialize Highest Round Tracker
-    level thread drawZombiesCounter(); // Initialize Zombie Counter HUD Overlay
-	precacheshader("damage_feedback"); // Precache shader for Shield Durability HUD Overlay
-	precacheshader("zm_riotshield_tomb_icon"); // Precache shader for Shield Durability HUD Overlay
-	precacheshader("zm_riotshield_hellcatraz_icon"); // Precache shader for Shield Durability HUD Overlay
-	precacheshader("menu_mp_fileshare_custom"); // Precache shader for Shield Durability HUD Overlay
+	thread initServerDvars(); 								// Initialize server DVars to be read from dedicated_zm.cfg
+	thread high_round_tracker(); 							// Initialize Highest Round Tracker
+    level thread drawZombiesCounter();						// Initialize Zombie Counter HUD Overlay
+	precacheshader("damage_feedback"); 						// Precache shader for Shield Durability HUD Overlay
+	precacheshader("zm_riotshield_tomb_icon"); 				// Precache shader for Shield Durability HUD Overlay
+	precacheshader("zm_riotshield_hellcatraz_icon"); 		// Precache shader for Shield Durability HUD Overlay
+	precacheshader("menu_mp_fileshare_custom"); 			// Precache shader for Shield Durability HUD Overlay
     for(;;)
     {
         level waittill("connected", player);
@@ -223,6 +224,8 @@ onplayerspawned()
 			self thread health_bar_hud();							// Adds the Health Bar HUD element on player spawn
 			self disable_melee_lunge();								// Disable Melee lunge
 			self enable_friendly_fire();							// Enable Friendly Fire (You can't damage your allies but now you can shoot through them!)
+			self thread staminup();									// Enable additional effects for stamin up perk
+			self thread speedcola();								// Enable additional effects for speed cola perk
 		}
 	}
 }
@@ -2001,6 +2004,58 @@ quickrevive()
 			self.health += 1;
 		}
 		wait 0.1;
+	}
+}
+
+//// Stamin Up now also increases Hold Breath duration, reduces Fall Damage and buffed the movement speed a bit more
+staminup()
+{
+	level endon("end_game");
+	self endon("disconnect");
+	for (;;)
+	{
+		self waittill_any("perk_acquired", "perk_lost");
+	
+		if (self hasperk("specialty_longersprint"))
+		{
+			self setperk("specialty_movefaster");
+			self setperk("specialty_fallheight");
+			self setperk("specialty_stalker");
+			self setperk("specialty_holdbreath");
+		}
+		else
+		{
+			self unsetperk("specialty_movefaster");
+			self unsetperk("specialty_fallheight");
+			self unsetperk("specialty_stalker");
+			self unsetperk("specialty_holdbreath");
+		}
+	}
+}
+
+//// Speed Cola now also affects Melee, Grenades and Equipment.
+speedcola()
+{
+	level endon("end_game");
+	self endon("disconnect");
+	for (;;)
+	{
+		self waittill_any("perk_acquired", "perk_lost");
+	
+		if (self hasperk("specialty_fastreload"))
+		{
+			self setperk("specialty_fastweaponswitch");
+			self setperk("specialty_fastmeleerecovery");
+			self setperk("specialty_fasttoss");
+			self setperk("specialty_fastequipmentuse");
+		}
+		else
+		{
+			self unsetperk("specialty_fastweaponswitch");
+			self unsetperk("specialty_fastmeleerecovery");
+			self unsetperk("specialty_fasttoss");
+			self unsetperk("specialty_fastequipmentuse");
+		}
 	}
 }
 
