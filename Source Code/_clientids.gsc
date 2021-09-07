@@ -349,7 +349,7 @@ doPHDdive() //credit to extinct. just edited to add self.hasPHD variable
 					explosionfx = loadfx("explosions/fx_default_explosion");
 				self playSound("zmb_phdflop_explo");
 				playfx(explosionfx, self.origin);
-				self damageZombiesInRange(310, self, "kill");
+				self damageZombiesInRange(250, self, "kill");
 				wait .3;
 			}
 		}
@@ -365,7 +365,7 @@ damageZombiesInRange(range, what, amount) //damage zombies for phd flopper
 		if(distance(zombie.origin, what.origin) < range)
 		{
 			if(amount == "kill")
-				zombie doDamage(zombie.health * 2, zombie.origin, self);
+				zombie doDamage(zombie.health * 1, zombie.origin, self);
 			else
 				zombie doDamage(amount, zombie.origin, self);
 		}
@@ -580,7 +580,7 @@ startInit()
 gscRestart()
 {
 	level waittill( "end_game" );
-	wait 15;
+	wait 30;
 	map_restart( false );
 }
 
@@ -1175,51 +1175,6 @@ welcome()
 	wait 5;
 	//	self iprintln("SET YOUR MESSAGE HERE");
 	//	self iprintln("SET YOUR MESSAGE HERE2");
-		self iprintln("^7Server feature list incoming in 15 seconds, make sure you read it.");
-	wait 15; 
-	self iprintln("^3THERE IS NO MODMENUS ENABLED ON THIS SERVER");
-	self iprintln("^3THERE IS NO CHAT COMMANDS FOR ANYTHING BUT RULES LIST ON THIS SERVER");
-	wait 3;
-	self iprintln("^7Patched most glitches and exploits, if any of them still work and you abuse it, you'll be banned.");
-	wait 3;
-	self iprintln("^7Increased perk limit to 9 perks");
-	wait 3;
-	self iprintln("^7Increased ^3Zombies per player ^7from ^66 ^7to ^68");
-	wait 3;
-	self iprintln("^7Increased ^3Zombies AI Limit ^7from ^624 ^7to ^632");
-	self iprintln("^3Mystery Box ^7cost increased from ^6950 ^7to ^61250");
-	wait 3; 
-	self iprintln("^3Quick Revive ^7now grants a small boost to health regeneration");
-	self iprintln("^3Speed Cola ^7now also speeds up Melee, Grenades and Equipment");
-	self iprintln("^3Stamin Up ^7now also increases Hold Breath duration.");
-	wait 4;
-	self iprintln("^3Deadshot Daiquiri/Mule Kick/PHD Flopper ^7is now available on most maps");
-	wait 3;
-	self iprintln("^3Revive Trigger Radius ^7increased from ^675 ^7yards to ^6125 ^7yards");
-	wait 3;
-	self iprintln("^3Weapons are now droppable^7. To drop your weapon, hold down your ^6'Melee' ^7button.");
-	self iprintln("^1NOTE: Currently bugged with Mule Kick. When you have 3 weapons and drop, you can't pick up a third again.");
-	wait 3;
-	self iprintln("^3Black Ops 3 Player Health ^7enabled, you can take one extra hit without Juggernog");
-	wait 3;
-	self iprintln("^3Black Ops 4 Zombie Health ^7enabled, Zombie health is capped at ^611272 ^7on round 35 and onwards");
-	wait 3;
-	self iprintln("^3Melee Lunging ^7disabled");
-	wait 3;
-	self iprintln("^3Teammates no longer prevent you from shooting");
-	wait 3;
-	self iprintln("^3Bank ^7disabled, bank is super boring and too many people exploit it.");
-	wait 3;
-	self iprintln("^3Fog ^7and ^3Depth of Field ^7is disabled on this server");
-	wait 3;
-	self iprintln("^7Tweaked points to reward Headshots more");
-	wait 3;
-	self iprintln("^7Server is hosted in ^6Sweden ^7and is up MOSTLY between ^610.00-02.00 AM GMT+1");
-	wait 3;
-	self iprintln("^7Upcoming/Planned features: ^3Mapvote, Vote to skip, Perk/Zombie adjustments");
-	self iprintln("^7Want to help or view the code? ^3https://github.com/MeguminBOT/Public-BO2-Mods");
-	wait 3;
-	self iprintln("^7That's all the information. Good luck and have fun gamers!");
 
 }
 
@@ -2663,8 +2618,18 @@ setlatepoints()
 {
 		if(level.round_number >= 5 && self.score < 2500) // You can change the round and money to your liking.
 			self.score = 2500;
+	        else if(level.round_number >= 10 && self.score < 3750) // You can change the round and money to your liking.
+			self.score = 3750; 
 	        else if(level.round_number >= 15 && self.score < 5000) // You can change the round and money to your liking.
 			self.score = 5000; 
+			else if(level.round_number >= 20 && self.score < 7500) // You can change the round and money to your liking.
+			self.score = 7500; 
+			else if(level.round_number >= 25 && self.score < 10000) // You can change the round and money to your liking.
+			self.score = 10000; 
+			else if(level.round_number >= 30 && self.score < 20000) // You can change the round and money to your liking.
+			self.score = 20000; 
+			else if(level.round_number >= 35 && self.score < 50000) // You can change the round and money to your liking.
+			self.score = 50000; 
 }
 
 //// Quick Revive regenerates health
