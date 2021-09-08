@@ -249,9 +249,9 @@ startCustomPerkMachines()
 		{
 			if(level.enablePHDFlopper == 1)
 				level thread CustomPerkMachine( "zombie_perk_bottle_whoswho", "zombie_vending_nuke_on_lo", "PHD Flopper", 3000, (1260.3, 2736.36, 3047.49), "PHD_FLOPPER", (0, 0, 0) );
-			//if(level.enableDeadshot == 1)
+			//if(level.enableDeadshot == 1) //DISABLED DUE TO CRASHING
 				//level thread CustomPerkMachine( "zombie_perk_bottle_whoswho", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (3690.54, 1932.36, 1420), "specialty_deadshot", (-15, 0, 0) );
-			//if(level.enableStaminUp == 1)
+			//if(level.enableStaminUp == 1) //DISABLED DUE TO CRASHING
 				//level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_doubletap2", "Stamin-Up", 2000, (1704, -35, 1120.13), "specialty_longersprint", (0, -30, 0) );
 		}
 		else if(getDvar("mapname") == "zm_buried") //buried
@@ -267,10 +267,10 @@ startCustomPerkMachines()
 				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_jugg", "PHD Flopper", 3000, (683, 727, -56), "PHD_FLOPPER", (5, 250, 0) );
 			if(level.enableDeadshot == 1)
 				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (747, 356, 91), "specialty_deadshot", (0, 330, 0) );
-			if(level.enableStaminUp == 1)
-				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_doubletap2", "Stamin-Up", 2000, (-638, 268, -54), "specialty_longersprint", (0, 165, 0) );
-			if(level.enableMuleKick == 1)
-				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_sleight", "Mule Kick", 3000, (-953, 715, 83), "specialty_additionalprimaryweapon", (0, 75, 0) );
+//			if(level.enableStaminUp == 1) //DISABLED DUE TO CRASHING
+//				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_doubletap2", "Stamin-Up", 2000, (-638, 268, -54), "specialty_longersprint", (0, 165, 0) );
+//			if(level.enableMuleKick == 1) //DISABLED DUE TO CRASHING
+//				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_sleight", "Mule Kick", 3000, (-953, 715, 83), "specialty_additionalprimaryweapon", (0, 75, 0) );
 		}
 		else if(getDvar("mapname") == "zm_transit") //transit
 		{
@@ -1172,10 +1172,9 @@ welcome()
 	self thread quickrevive();											// Executes tweaks for Quick Revive 
 	//self thread inspect();											// Executes the code for Inspect Weapon
 	self thread drop();													// Executes the code for Drop Weapon
-	wait 5;
+	wait 5; 
 	//	self iprintln("SET YOUR MESSAGE HERE");
 	//	self iprintln("SET YOUR MESSAGE HERE2");
-
 }
 
 //// Adds a HUD element showing how many zombies are left
@@ -1396,15 +1395,15 @@ zone_hud()
 	zone_hud.x += 5;
 	if (level.script == "zm_buried")
 	{
-		zone_hud.y -= 125;
+		zone_hud.y -= 175;
 	}
 	else if (level.script == "zm_tomb")
 	{
-		zone_hud.y -= 160;
+		zone_hud.y -= 175;
 	}
 	else
 	{
-		zone_hud.y -= 100;
+		zone_hud.y -= 175;
 	}
 	zone_hud.fontscale = 1.4;
 	zone_hud.alpha = 0;
