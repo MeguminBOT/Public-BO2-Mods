@@ -328,7 +328,7 @@ onPlayerDowned()
     		self.icon1 Destroy();self.icon1 = undefined; //deletes the perk icons and resets the variable
     		self.icon2 Destroy();self.icon2 = undefined; //deletes the perk icons and resets the variable
     		self.icon3 Destroy();self.icon3 = undefined; //deletes the perk icons and resets the variable
-    		self.icon4 Destroy();self.icon4 = undefined; //eletes the perk icons and resets the variable
+    		self.icon4 Destroy();self.icon4 = undefined; //deletes the perk icons and resets the variable
 	}
 }
 
