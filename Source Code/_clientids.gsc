@@ -263,8 +263,8 @@ startCustomPerkMachines()
 		}
 		else if(getDvar("mapname") == "zm_nuked") //nuketown
 		{
-			if(level.enablePHDFlopper == 1)
-				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_jugg", "PHD Flopper", 3000, (683, 727, -56), "PHD_FLOPPER", (5, 250, 0) );
+//			if(level.enablePHDFlopper == 1) //DISABLED DUE TO CRASHING
+//				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_jugg", "PHD Flopper", 3000, (683, 727, -56), "PHD_FLOPPER", (5, 250, 0) ); 
 			if(level.enableDeadshot == 1)
 				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (747, 356, 91), "specialty_deadshot", (0, 330, 0) );
 //			if(level.enableStaminUp == 1) //DISABLED DUE TO CRASHING
@@ -328,7 +328,7 @@ onPlayerDowned()
     		self.icon1 Destroy();self.icon1 = undefined; //deletes the perk icons and resets the variable
     		self.icon2 Destroy();self.icon2 = undefined; //deletes the perk icons and resets the variable
     		self.icon3 Destroy();self.icon3 = undefined; //deletes the perk icons and resets the variable
-    		self.icon4 Destroy();self.icon4 = undefined; //deletes the perk icons and resets the variable
+    		self.icon4 Destroy();self.icon4 = undefined; //eletes the perk icons and resets the variable
 	}
 }
 
@@ -349,7 +349,7 @@ doPHDdive() //credit to extinct. just edited to add self.hasPHD variable
 					explosionfx = loadfx("explosions/fx_default_explosion");
 				self playSound("zmb_phdflop_explo");
 				playfx(explosionfx, self.origin);
-				self damageZombiesInRange(250, self, "kill");
+				self damageZombiesInRange(200, self, "kill");
 				wait .3;
 			}
 		}
@@ -1172,7 +1172,7 @@ welcome()
 	self thread quickrevive();											// Executes tweaks for Quick Revive 
 	//self thread inspect();											// Executes the code for Inspect Weapon
 	self thread drop();													// Executes the code for Drop Weapon
-	wait 5; 
+	wait 5;
 	//	self iprintln("SET YOUR MESSAGE HERE");
 	//	self iprintln("SET YOUR MESSAGE HERE2");
 }
@@ -2617,18 +2617,7 @@ setlatepoints()
 {
 		if(level.round_number >= 5 && self.score < 2500) // You can change the round and money to your liking.
 			self.score = 2500;
-	        else if(level.round_number >= 10 && self.score < 3750) // You can change the round and money to your liking.
-			self.score = 3750; 
 	        else if(level.round_number >= 15 && self.score < 5000) // You can change the round and money to your liking.
-			self.score = 5000; 
-			else if(level.round_number >= 20 && self.score < 7500) // You can change the round and money to your liking.
-			self.score = 7500; 
-			else if(level.round_number >= 25 && self.score < 10000) // You can change the round and money to your liking.
-			self.score = 10000; 
-			else if(level.round_number >= 30 && self.score < 20000) // You can change the round and money to your liking.
-			self.score = 20000; 
-			else if(level.round_number >= 35 && self.score < 50000) // You can change the round and money to your liking.
-			self.score = 50000; 
 }
 
 //// Quick Revive regenerates health
