@@ -261,17 +261,17 @@ startCustomPerkMachines()
 			if(level.enableDeadshot == 1)
 				level thread CustomPerkMachine( "zombie_perk_bottle_marathon", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (1055.18, -1055.55, 201), "specialty_deadshot", (3, 270, 0) );
 		}
-		else if(getDvar("mapname") == "zm_nuked") //nuketown
-		{
-//			if(level.enablePHDFlopper == 1) //DISABLED DUE TO CRASHING
+//		else if(getDvar("mapname") == "zm_nuked") //DISABLED DUE TO CRASHING
+//		
+//			if(level.enablePHDFlopper == 1)
 //				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_jugg", "PHD Flopper", 3000, (683, 727, -56), "PHD_FLOPPER", (5, 250, 0) ); 
-			if(level.enableDeadshot == 1)
-				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (747, 356, 91), "specialty_deadshot", (0, 330, 0) );
+//			if(level.enableDeadshot == 1)
+//				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (747, 356, 91), "specialty_deadshot", (0, 330, 0) );
 //			if(level.enableStaminUp == 1) //DISABLED DUE TO CRASHING
 //				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_doubletap2", "Stamin-Up", 2000, (-638, 268, -54), "specialty_longersprint", (0, 165, 0) );
-//			if(level.enableMuleKick == 1) //DISABLED DUE TO CRASHING
+//			if(level.enableMuleKick == 1)
 //				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_sleight", "Mule Kick", 3000, (-953, 715, 83), "specialty_additionalprimaryweapon", (0, 75, 0) );
-		}
+		
 		else if(getDvar("mapname") == "zm_transit") //transit
 		{
 			if(level.enablePHDFlopper == 1)
@@ -318,21 +318,21 @@ onPlayerDowned()
 	for(;;)
 	{
 		self waittill_any( "player_downed", "fake_death", "entering_last_stand");
-    		self unsetperk( "specialty_additionalprimaryweapon" ); //removes the mulekick perk functionality
-		self unsetperk( "specialty_longersprint" ); //removes the staminup perk functionality
-		self unsetperk( "specialty_deadshot" ); //removes the deadshot perk functionality
-		self.hasPHD = undefined; //resets the flopper variable
-		self.hasMuleKick = undefined; //resets the mule kick variable
-		self.hasStaminUp = undefined; //resets the staminup variable
-		self.hasDeadshot = undefined; //resets the deadshot variable
-    		self.icon1 Destroy();self.icon1 = undefined; //deletes the perk icons and resets the variable
-    		self.icon2 Destroy();self.icon2 = undefined; //deletes the perk icons and resets the variable
-    		self.icon3 Destroy();self.icon3 = undefined; //deletes the perk icons and resets the variable
-    		self.icon4 Destroy();self.icon4 = undefined; //deletes the perk icons and resets the variable
+    		self unsetperk( "specialty_additionalprimaryweapon" ); 							//removes the mulekick perk functionality
+		self unsetperk( "specialty_longersprint" ); 										//removes the staminup perk functionality
+		self unsetperk( "specialty_deadshot" ); 											//removes the deadshot perk functionality
+		self.hasPHD = undefined; 															//resets the flopper variable
+		self.hasMuleKick = undefined; 														//resets the mule kick variable
+		self.hasStaminUp = undefined; 														//resets the staminup variable
+		self.hasDeadshot = undefined; 														//resets the deadshot variable
+    		self.icon1 Destroy();self.icon1 = undefined; 									//deletes the perk icons and resets the variable
+    		self.icon2 Destroy();self.icon2 = undefined; 									//deletes the perk icons and resets the variable
+    		self.icon3 Destroy();self.icon3 = undefined; 									//deletes the perk icons and resets the variable
+    		self.icon4 Destroy();self.icon4 = undefined; 									//deletes the perk icons and resets the variable
 	}
 }
 
-doPHDdive() //credit to extinct. just edited to add self.hasPHD variable
+doPHDdive() //Credits to extinct. just edited to add self.hasPHD variable
 {
 	self endon("disconnect");
 	level endon("end_game");
@@ -382,7 +382,8 @@ phd_flopper_dmg_check( einflictor, eattacker, idamage, idflags, smeansofdeath, s
 	[[ level.playerDamageStub ]]( einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, timeoffset, boneindex );
 }
 
-CustomPerkMachine( bottle, model, perkname, cost, origin, perk, angles ) //custom perk system. orginal code from ZeiiKeN. edited to work for all maps and custom phd perk
+// Custom perk system. original code from ZeiiKeN. Edited to work for all maps and custom phd perk
+CustomPerkMachine( bottle, model, perkname, cost, origin, perk, angles ) 
 {
 	level endon( "end_game" );
 	if(!isDefined(level.customPerkNum))
@@ -1395,15 +1396,15 @@ zone_hud()
 	zone_hud.x += 5;
 	if (level.script == "zm_buried")
 	{
-		zone_hud.y -= 175;
+		zone_hud.y -= 180;
 	}
 	else if (level.script == "zm_tomb")
 	{
-		zone_hud.y -= 175;
+		zone_hud.y -= 180;
 	}
 	else
 	{
-		zone_hud.y -= 175;
+		zone_hud.y -= 180;
 	}
 	zone_hud.fontscale = 1.4;
 	zone_hud.alpha = 0;
@@ -2618,6 +2619,7 @@ setlatepoints()
 		if(level.round_number >= 5 && self.score < 2500) // You can change the round and money to your liking.
 			self.score = 2500;
 	        else if(level.round_number >= 15 && self.score < 5000) // You can change the round and money to your liking.
+			self.score = 5000;
 }
 
 //// Quick Revive regenerates health
