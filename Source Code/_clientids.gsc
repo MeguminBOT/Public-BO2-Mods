@@ -2616,10 +2616,10 @@ bo4zombiehealth()
 setlatepoints()
 
 {
-		if(level.round_number >= 5 && self.score < 2500) // You can change the round and money to your liking.
-			self.score = 2500;
-	        else if(level.round_number >= 15 && self.score < 5000) // You can change the round and money to your liking.
+		if(level.round_number >= 10 && self.score < 5000) // You can change the round and money to your liking.
 			self.score = 5000;
+	        else if(level.round_number >= 20 && self.score < 10000) // You can change the round and money to your liking.
+			self.score = 10000;
 }
 
 //// Quick Revive regenerates health
