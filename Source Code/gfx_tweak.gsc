@@ -16,15 +16,14 @@ init()
 // When players connected
 onplayerconnect()
 {
-	level endon( "end_game" );
-	self endon( "disconnect" );
-	while ( 1 )
-	{
-		level waittill( "connected", player );
-		self thread visuals();
-	}
+    for(;;)
+    {
+        level waittill("connected", player);
+        self thread visuals();											// Execute Fog, DoF, LoD Dvars
+    }
 }
 
+// Toggle Fog, LoD, DoF on or off
 visuals()
 {
 	self setClientDvar("r_fog", 0);										// Should FOG be enabled? (1 = Yes, 0 = No) (Default = 1)

@@ -5,34 +5,34 @@
 #include maps\mp\gametypes_zm\_hud_message;
 #include maps\mp\zombies\_zm_utility;
 
+
 // Initialize the code
 init()
 {
 	thread high_round_tracker(); 							// Initialize Highest Round Tracker
-    level thread drawZombiesCounter();						// Initialize Zombie Counter HUD Overlay
 	precacheshader("damage_feedback"); 						// Precache shader for Shield Durability HUD Overlay
 	precacheshader("zm_riotshield_tomb_icon"); 				// Precache shader for Shield Durability HUD Overlay
 	precacheshader("zm_riotshield_hellcatraz_icon"); 		// Precache shader for Shield Durability HUD Overlay
 	precacheshader("menu_mp_fileshare_custom"); 			// Precache shader for Shield Durability HUD Overlay
     for(;;)
     {
-        level waittill("connected", player);
+		level waittill("connected", player);
     }
 }
 
+// When players connected
 onplayerconnect()
 {
-	level endon( "end_game" );
-	self endon( "disconnect" );
-	while ( 1 )
-	{
-		level waittill( "connected", player );
-		player thread high_round_info();
-		self thread timer_hud();								// Initialize Timer HUD element
-		self thread zone_hud();									// Initialize Zone HUD element
-		self thread health_bar_hud();							// Initialize Highest Round Tracker
-		self thread shield_hud();								// Initialize Shield Durability HUD Overlay
-	}
+    for(;;)
+    {
+		level waittill("connected", player);
+		level thread drawZombiesCounter();						// Execute Zombie Counter HUD Overlay
+		self thread shield_hud();								// Execute Shield Durability HUD Overlay
+		self thread health_bar_hud();							// Execute Highest Round Tracker
+		self thread timer_hud();								// Execute Timer HUD element
+		self thread zone_hud();									// Execute Zone HUD element
+		player thread high_round_info();						// Execute Highest Round Tracker
+    }
 }
 
 //// Adds a HUD element showing how many zombies are left
