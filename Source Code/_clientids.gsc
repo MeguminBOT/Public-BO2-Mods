@@ -1244,10 +1244,10 @@ shield_hud()
 			shield_text.alpha = 0;
 			shield_hud.alpha = 0;
 		}
-		shield_text setvalue(2250 - self.shielddamagetaken);
+		shield_text setvalue(2500 - self.shielddamagetaken);
 		wait 0.05;
 		
-		if(self.shielddamagetaken >= 2250)
+		if(self.shielddamagetaken >= 2500)
 		{
 			shield_text.alpha = 0;
 		}
