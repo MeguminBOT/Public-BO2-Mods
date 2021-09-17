@@ -1,8 +1,9 @@
-﻿#include maps\mp\gametypes_zm\_hud_util;
-#include maps\mp\zombies\_zm_utility;
+﻿#include common_scripts\utility;
 #include maps\mp\_utility;
+#include maps\mp\gametypes_zm\_hud_util;
+#include maps\mp\gametypes_zm\_hud_message;
 #include maps\mp\zombies\_zm;
-
+#include maps\mp\zombies\_zm_utility;
 
 init()
 {
@@ -110,7 +111,7 @@ disable_pers_upgrades()
 
 disable_player_pers_upgrades()
 {
-	flag_wait( "initial_blackscreen_passed" );
+	flag_wait("initial_blackscreen_passed");
 	if (isDefined(self.pers_upgrades_awarded))
 	{
 		upgrade = getFirstArrayKey(self.pers_upgrades_awarded);

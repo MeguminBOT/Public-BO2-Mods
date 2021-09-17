@@ -570,3 +570,14 @@ watch_for_respawn()
 		}
 	}
 }
+
+setMysteryBoxPrice() //mystery box price
+{
+	i = 0;
+    while (i < level.chests.size)
+    {
+        level.chests[ i ].zombie_cost = level.customMysteryBoxPrice;
+        level.chests[ i ].old_cost = level.customMysteryBoxPrice;
+        i++;
+    }
+}
