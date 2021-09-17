@@ -14,10 +14,7 @@ init()
 	precacheshader("zm_riotshield_tomb_icon"); 				// Precache shader for Shield Durability HUD Overlay
 	precacheshader("zm_riotshield_hellcatraz_icon"); 		// Precache shader for Shield Durability HUD Overlay
 	precacheshader("menu_mp_fileshare_custom"); 			// Precache shader for Shield Durability HUD Overlay
-    for(;;)
-    {
-		level waittill("connected", player);
-    }
+	level thread onplayerconnect();
 }
 
 // When players connected

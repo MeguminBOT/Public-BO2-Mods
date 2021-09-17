@@ -21,7 +21,7 @@ init()
     for(;;)
     {
         level waittill("connected", player);
-		onPlayerConnect()
+		level thread onplayerconnect();
 		thread gscRestart(); 								// JezuzLizard fix sound stuff
 		thread setPlayersToSpectator(); 					// JezuzLizard fix sound stuff
     }
