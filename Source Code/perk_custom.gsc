@@ -20,7 +20,6 @@ init()
 	level thread onPlayerConnect(); 															// When players connected
 	thread initServerDvars(); 																	// Initilize server dvars (credit JezuzLizard)
 	thread startCustomPerkMachines(); 															// Cahz custom perk machines
-	level.afterlife_give_loadout = maps/mp/gametypes_zm/_clientids::give_afterlife_loadout; 	// Override function that gives loadout back to the player.
 	level.playerDamageStub = level.callbackplayerdamage; 										// Damage callback for PHD Flopper
 	level.callbackplayerdamage = ::phd_flopper_dmg_check; 										// More damage callback stuff.
 	isTown(); 																					// Jezuzlizard's fix for tombstone :)
@@ -550,90 +549,6 @@ isTown()
 		thread solo_tombstone_removal();
 		thread turn_tombstone_on();
 	}
-}
-
-//// Fixes losing Custom Perks when entering afterlife on Alcatraz
-give_afterlife_loadout()
-{
-	perk_array = maps/mp/zombies/_zm_perks::get_perk_array( 1 );
-	i = 0;
-	while ( i < perk_array.size )
-	{
-		perk = perk_array[ i ];
-		self unsetperk( perk );
-		self set_perk_clientfield( perk, 0 );
-		i++;
-	}
-	if (is_true(self.keep_perks))
-	{
-		if(is_true(self.hadphd))
-		{
-			self.hasphd = true;
-			self.hadphd = undefined;
-			self thread maps/mp/gametypes_zm/_clientids::drawCustomPerkHUD("specialty_doubletap_zombies", 0, (1, 0.25, 1));
-		}
-	}
-	if ( isDefined( self.keep_perks ) && self.keep_perks && isDefined( loadout.perks ) && loadout.perks.size > 0 )
-	{
-		i = 0;
-		while ( i < loadout.perks.size )
-		{
-			if ( self hasperk( loadout.perks[ i ] ) )
-			{
-				i++;
-				continue;
-			}
-			if ( loadout.perks[ i ] == "specialty_quickrevive" && flag( "solo_game" ) )
-			{
-				level.solo_game_free_player_quickrevive = 1;
-			}
-			if ( loadout.perks[ i ] == "specialty_longersprint" )
-			{
-				self setperk( "specialty_longersprint" ); //removes the staminup perk functionality
-				self.hasStaminUp = true; //resets the staminup variable
-				self thread maps/mp/gametypes_zm/_clientids::drawCustomPerkHUD("specialty_juggernaut_zombies", 0, (1, 1, 0));
-				arrayremovevalue( loadout.perks, "specialty_longersprint" );
-
-				continue;
-			}
-			if ( loadout.perks[ i ] == "specialty_additionalprimaryweapon" )
-			{
-				self setperk( "specialty_additionalprimaryweapon"); //removes the deadshot perk functionality
-				self.hasMuleKick = true; //resets the deadshot variable
-				self thread maps/mp/gametypes_zm/_clientids::drawCustomPerkHUD("specialty_fastreload_zombies", 0, (0, 0.7, 0));
-				arrayremovevalue( loadout.perks, "specialty_additionalprimaryweapon" );
-				continue;
-			}
-			if ( loadout.perks[ i ] == "specialty_finalstand" )
-			{
-				i++;
-				continue;
-			}
-			maps/mp/zombies/_zm_perks::give_perk( loadout.perks[ i ] );
-			i++;
-			wait 0.05;
-		}
-	}
-	self.keep_perks = undefined;
-}
-
-//// Fixes losing Custom Perks when entering afterlife on Alcatraz
-save_afterlife_loadout()
-{
-	self.loadout = spawnstruct();
-	self.loadout.player = self;
-	self.loadout.perks = afterlife_save_perks( self );
-}
-
-//// Fixes losing Custom Perks when entering afterlife on Alcatraz
-afterlife_save_perks( ent )
-{
-	perk_array = ent get_perk_array( 1 );
-	foreach ( perk in perk_array )
-	{
-		ent unsetperk( perk );
-	}
-	return perk_array;
 }
 
 //// When players get revived
