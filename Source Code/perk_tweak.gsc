@@ -9,7 +9,6 @@
 #include maps\mp\zombies\_zm_perks;
 #include maps\mp\zombies\_zm_chugabud;
 
-
 // Initialize the code
 init()
 {

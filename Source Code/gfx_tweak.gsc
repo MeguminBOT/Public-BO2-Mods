@@ -6,7 +6,6 @@
 #include maps\mp\zombies\_zm;
 #include maps\mp\zombies\_zm_utility;
 
-
 // Initialize the code
 init()
 {

@@ -332,7 +332,6 @@ precache()
 	PrecacheModel("zombie_perk_bottle_whoswho");
 	PrecacheModel("zombie_vending_nuke_on_lo");
 	PrecacheModel("p6_zm_al_vending_pap_on");
-	PrecacheModel("p6_anim_zm_buildable_pap");
 	PrecacheModel("p6_zm_al_vending_pap_on");
 	PrecacheModel("p6_zm_al_vending_jugg_on");
 	PrecacheModel("p6_zm_al_vending_sleight_on");
