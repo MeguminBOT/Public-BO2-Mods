@@ -581,3 +581,4 @@ setMysteryBoxPrice() //mystery box price
         i++;
     }
 }
+

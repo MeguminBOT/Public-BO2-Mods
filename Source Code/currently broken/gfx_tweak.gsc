@@ -15,7 +15,7 @@ init()
 // When players connected
 onplayerconnect()
 {
-    for(;;)
+    for (;;)
     {
         level waittill("connected", player);
         self thread visuals();											// Execute Fog, DoF, LoD Dvars
