@@ -18,7 +18,7 @@ init()
 {
 	precache(); 											// Precache for models
 	thread initServerDvars(); 								// Initialize server DVars to be read from dedicated_zm.cfg
-    for(;;)
+    for	(;;)
     {
         level waittill("connected", player);
 		level thread onplayerconnect();
@@ -36,6 +36,7 @@ onplayerconnect()
 	{
 		level waittill( "connected", player );
 		player thread spawnIfRoundOne();
+		player thread onplayerspawned();
 	}
 }
 
@@ -50,7 +51,26 @@ precache()
 	PrecacheModel("p6_anim_zm_buildable_pap");
 }
 
-//// Make almost everything configurable through dedicated_zm.cfg
+// Dont touch these, unless you need to add or remove scripts here
+onplayerspawned()
+{
+	self endon( "disconnect" );
+	for	(;;)
+	{
+		self waittill( "spawned_player" );
+		self._retain_perks = getDvarIntDefault( "cmPlayerRetainPerks", 0 );
+		if ( !isDefined( self.cmIsFirstSpawn ) || !self.cmIsFirstSpawn )
+		{
+			self.cmIsFirstSpawn = 1;								// Is this the first time the player has spawnned?
+			self thread watch_for_respawn();						// Waits for respawn
+			self.health = level.cmPlayerMaxHealth; 					// (UNSURE) Links together with level.cmPlayerMaxHealth
+			self.maxHealth = self.health; 							// (UNSURE) Links together with self.health
+			self setMaxHealth( level.cmPlayerMaxHealth );			// Calls for Health values from initServerDvars() which then asks for cmPlayerMaxHealth inside dedicated_zm.cfg
+		}
+	}
+}
+
+// Make almost everything configurable through dedicated_zm.cfg
 initServerDvars()
 {
 	level.no_end_game_check = getDvarIntDefault( "cmLevelNoEndGameCheck", 0 );
@@ -316,6 +336,7 @@ setToSpectator()
     }
 }
 
+// When spawning all players
 spawnAllPlayers()
 {
 	players = get_players();
@@ -571,7 +592,8 @@ watch_for_respawn()
 	}
 }
 
-setMysteryBoxPrice() //mystery box price
+// Custom Mystery Box price, configurable inside dedicated_zm.cfg
+setMysteryBoxPrice() 
 {
 	i = 0;
     while (i < level.chests.size)

@@ -35,14 +35,33 @@ onplayerconnect()
 	for(;;)
 	{
 		level waittill( "connected", player );
+		player thread onplayerspawned();
 		player thread spawnIfRoundOne();
-		self thread visuals();
-		self thread shield_hud();								// Executes the code for Shield Durability HUD
-		self thread timer_hud();								// Adds the Timer HUD element on player spawn
-		self thread zone_hud();									// Adds the Zone HUD element on player spawn
-		self thread health_bar_hud();							// Adds the Health Bar HUD element on player spawn
 	}
 }
+
+// Dont touch these, unless you need to add or remove scripts here
+onplayerspawned()
+{
+	self endon( "disconnect" );
+	while ( 1 )
+	{
+		self waittill( "spawned_player" );
+		self._retain_perks = getDvarIntDefault( "cmPlayerRetainPerks", 0 );
+		if ( !isDefined( self.cmIsFirstSpawn ) || !self.cmIsFirstSpawn )
+		{
+			self.cmIsFirstSpawn = 1;								// Is this the first time the player has spawnned?
+			self thread watch_for_respawn();						// Waits for respawn
+			self.health = level.cmPlayerMaxHealth; 					// (UNSURE) Links together with level.cmPlayerMaxHealth
+			self.maxHealth = self.health; 							// (UNSURE) Links together with self.health
+			self setMaxHealth( level.cmPlayerMaxHealth );			// Calls for Health values from initServerDvars() which then asks for cmPlayerMaxHealth inside dedicated_zm.cfg
+			self thread timer_hud();								// Adds the Timer HUD element on player spawn
+			self thread zone_hud();									// Adds the Zone HUD element on player spawn
+			self thread health_bar_hud();							// Adds the Health Bar HUD element on player spawn
+		}
+	}
+}
+
 
 // Precaching stuff
 precache()
