@@ -4,13 +4,13 @@ THIS IS A FORK OF https://github.com/JezuzLizard/Public-BO2-Mods/tree/master/Con
 
 **NOTE: Pre-compiled folder contains several required dependencies that you'll need even if you decide to compile it by yourself.**
 
-Drag 'N' Drop install available here: https://github.com/MeguminBOT/Public-BO2-Mods/releases
+Drag 'N' Drop install available here (Outdated until custom scripts execution are fixed properly): https://github.com/MeguminBOT/Public-BO2-Mods/releases
 
 
 
 If you want to test all the features added here, Then open Plutonium BO2 and join the following server: 
 
-**EU Nordic | PotHouse Public [MapRotate/NO BANK]**
+**[EU Nordic] PotZombies: The Hardest Server_NOBANK**
 It's up almost 24/7
 
 
@@ -18,10 +18,10 @@ It's up almost 24/7
 
 **_1. A script compilation that's easy to tweak or to help inexperienced people host their own server with ZERO scripting knowledge_**
 
-**_2. If used out of the box with no tweaking then it replicates a Harder and more challenging Zombies experience with B01 feeling by removing the Bank._**
+**_2. If used with no tweaking then it replicates a much Harder and more challenging Zombies experience with B01 feeling by removing the Bank and persistent upgrades._**
 
 
-# What's added?
+# What's added? (More features have been added, updating list when everything works as it should)
 **Added GSC features/Tweaks List** (Works directly after download if downloading pre-compiled GSC and dedicated_zm.cfg files)
 
     HUD: Zombie Counter -- //Credits ?? Not sure where I got it from in the first place.
@@ -57,7 +57,7 @@ It's up almost 24/7
 NOTE: I won't add any scripts that will auto build easter egg stuff for you or grant mod menu hack commands since I consider these cheating
 
 Future goals:
-Make every script toggle-able through dedicated_zm.cfg without making the server unstable.
+Make most script toggle-able through dedicated_zm.cfg without making the server unstable.
 If you want FOG enabled, you'll currently have to disable them inside _clientids.gsc and compile it yourself. Will be toggle-able inside dedicated_zm.cfg soon
 
 Quick Credits:
