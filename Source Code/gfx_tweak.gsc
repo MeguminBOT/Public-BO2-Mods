@@ -9,28 +9,18 @@
 // Initialize the code
 init()
 {
-	level thread onplayerconnect();
-}
-
-// When players connected
-onplayerconnect()
-{
-    for (;;)
-    {
-        level waittill("connected", player);
-        self thread visuals();											// Execute Fog, DoF, LoD Dvars
-    }
+	level thread visuals();
 }
 
 // Toggle Fog, LoD, DoF on or off
 visuals()
 {
-	self setClientDvar("r_fog", 0);										// Should FOG be enabled? (1 = Yes, 0 = No) (Default = 1)
-	self setClientDvar("r_dof_enable", 0);								// Should Depth of Field be enabled? (1 = Yes, 0 = No) (Default = 1)
-	self setClientDvar("r_lodBiasRigid", -1000);						// (1 = Yes, 0 = No) Default = 0
-	self setClientDvar("r_lodBiasSkinned", -1000);						// (1 = Yes, 0 = No) Default = 0
-	self setClientDvar("r_lodScaleRigid", 1);							// (1 = Yes, 0 = No) Default = 1
-	self setClientDvar("r_lodScaleSkinned", 1);							// (1 = Yes, 0 = No) Default = 1
+	setDvar("r_fog", 0);												// Should FOG be enabled? (1 = Yes, 0 = No) (Default = 1)
+	setDvar("r_dof_enable", 0);											// Should Depth of Field be enabled? (1 = Yes, 0 = No) (Default = 1)
+	setDvar("r_lodBiasRigid", -1000);									// (1 = Yes, 0 = No) Default = 0
+	setDvar("r_lodBiasSkinned", -1000);									// (1 = Yes, 0 = No) Default = 0
+	setDvar("r_lodScaleRigid", 1);										// (1 = Yes, 0 = No) Default = 1
+	setDvar("r_lodScaleSkinned", 1);									// (1 = Yes, 0 = No) Default = 1
 	self useservervisionset(1);											// (1 = Yes, 0 = No) Default = 1
 	self setvisionsetforplayer("remote_mortar_enhanced", 0);			// (1 = Yes, 0 = No) Default = 0
 }
