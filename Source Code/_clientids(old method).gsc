@@ -16,6 +16,7 @@ init()
 {
 	startInit(); 											// Precache for models
 	thread initServerDvars(); 								// Initialize server DVars to be read from dedicated_zm.cfg
+	thread increaseZombiesLimit();
 	thread startCustomPerkMachines(); 						// Initialize Custom Perk Machines
 	level.playerDamageStub = level.callbackplayerdamage; 	// Callback
 	level.callbackplayerdamage = ::phd_flopper_dmg_check; 	// Callback
@@ -1169,6 +1170,7 @@ welcome()
     self waittill("spawned_player");
 	self thread visuals();												// Executes Remove Fog and Dof on spawn
 	level thread bo4zombiehealth();										// Executes Black Ops 3/4 zombie health values
+	thread bo4maxammo();
 	self thread shield_hud();											// Executes the code for Shield Durability HUD
 	self thread setlatepoints();										// Executes the code for Bonus Points if players join later in the game.
 	self thread quickrevive();											// Executes tweaks for Quick Revive 
@@ -2591,12 +2593,15 @@ visuals()
 {
 	self setClientDvar("r_fog", 0);										// Should FOG be enabled? (1 = Yes, 0 = No) (Default = 1)
 	self setClientDvar("r_dof_enable", 0);								// Should Depth of Field be enabled? (1 = Yes, 0 = No) (Default = 1)
-	self setClientDvar("r_lodBiasRigid", -1000);						// (1 = Yes, 0 = No) Default = 0
-	self setClientDvar("r_lodBiasSkinned", -1000);						// (1 = Yes, 0 = No) Default = 0
-	self setClientDvar("r_lodScaleRigid", 1);							// (1 = Yes, 0 = No) Default = 1
-	self setClientDvar("r_lodScaleSkinned", 1);							// (1 = Yes, 0 = No) Default = 1
+	self setClientDvar("r_lodBiasRigid", -1000);
+	self setClientDvar("r_lodBiasSkinned", -1000);
+	self setClientDvar("r_lodScaleRigid", 1);
+	self setClientDvar("r_lodScaleSkinned", 1);
+	self setclientdvar( "r_enablePlayerShadow", 1 );					// (1 = Yes, 0 = No) Default = 1
+	self setclientdvar( "sm_sunquality", 2 );
 	self useservervisionset(1);											// (1 = Yes, 0 = No) Default = 1
 	self setvisionsetforplayer("remote_mortar_enhanced", 0);			// (1 = Yes, 0 = No) Default = 0
+	self setvisionsetforplayer("", 0);
 }
 
 //// Zombie health does not increase past round 35, like in Black Ops 3/4
@@ -2761,66 +2766,90 @@ disable_melee_lunge()
 	setDvar( "aim_automelee_enabled", 0 );
 }
 
-wallbuy_cost_changes()
+// wallbuy_cost_changes()
+// {
+	// level endon("end_game");
+	// self endon("disconnect");
+	// for(;;)
+	// {
+		// if (isDefined(level.zombie_weapons["beretta93r_zm"]))
+		// {
+			// cost = 750;
+			// level.zombie_weapons["beretta93r_zm"].cost = cost;
+			// level.zombie_weapons["beretta93r_zm"].ammo_cost = int(cost / 2);
+		// }
+
+		// if (isDefined(level.zombie_weapons["870mcs_zm"]))
+		// {
+			// cost = 750;
+			// level.zombie_weapons["870mcs_zm"].cost = cost;
+			// level.zombie_weapons["870mcs_zm"].ammo_cost = int(cost / 2);
+		// }
+		
+		// if (isDefined(level.zombie_weapons["an94_zm"]))
+		// {
+			// cost = 2000;
+			// level.zombie_weapons["an94_zm"].cost = cost;
+			// level.zombie_weapons["an94_zm"].ammo_cost = int(cost / 2);
+		// }
+		
+		// if (isDefined(level.zombie_weapons["svu_zm"]))
+		// {
+			// cost = 3250;
+			// level.zombie_weapons["svu_zm"].cost = cost;
+			// level.zombie_weapons["svu_zm"].ammo_cost = int(cost / 2);
+		// }
+		
+		// if (isDefined(level.zombie_weapons["pdw57_zm"]))
+		// {
+			// cost = 1200;
+			// level.zombie_weapons["pdw57_zm"].cost = cost;
+			// level.zombie_weapons["pdw57_zm"].ammo_cost = int(cost / 2);
+		// }
+		
+		// if (isDefined(level.zombie_weapons["ak74u_zm"]))
+		// {
+			// cost = 1325;
+			// level.zombie_weapons["ak74_zm"].cost = cost;
+			// level.zombie_weapons["ak74_zm"].ammo_cost = int(cost / 2);
+		// }
+		
+		// if (isDefined(level.zombie_weapons["mp40_zm"]))
+		// {
+			// cost = 1325;
+			// level.zombie_weapons["mp40_zm"].cost = cost;
+			// level.zombie_weapons["mp40_zm"].ammo_cost = int(cost / 2);
+		// }
+		
+		// if (isDefined(level.zombie_weapons["m16_zm"]))
+		// {
+			// cost = 2000;
+			// level.zombie_weapons["m16_zm"].cost = cost;
+			// level.zombie_weapons["m16_zm"].ammo_cost = int(cost / 2);
+		// }
+	// }
+// }
+
+
+increaseZombiesLimit()
+{
+    level.zombie_ai_limit = 9999;
+    level.zombie_actor_limit = 9999;
+}
+
+// Max ammos refill weapon clips
+// Credits to teh-bandit
+bo4maxammo()
 {
 	level endon("end_game");
 	self endon("disconnect");
-	for(;;)
+	for(;;) 
 	{
-		if (isDefined(level.zombie_weapons["beretta93r_zm"]))
+		self waittill("zmb_max_ammo");
+		weaps = self getweaponslist(1);
+		foreach (weap in weaps) 
 		{
-			cost = 750;
-			level.zombie_weapons["beretta93r_zm"].cost = cost;
-			level.zombie_weapons["beretta93r_zm"].ammo_cost = int(cost / 2);
-		}
-
-		if (isDefined(level.zombie_weapons["870mcs_zm"]))
-		{
-			cost = 750;
-			level.zombie_weapons["870mcs_zm"].cost = cost;
-			level.zombie_weapons["870mcs_zm"].ammo_cost = int(cost / 2);
-		}
-		
-		if (isDefined(level.zombie_weapons["an94_zm"]))
-		{
-			cost = 2000;
-			level.zombie_weapons["an94_zm"].cost = cost;
-			level.zombie_weapons["an94_zm"].ammo_cost = int(cost / 2);
-		}
-		
-		if (isDefined(level.zombie_weapons["svu_zm"]))
-		{
-			cost = 3250;
-			level.zombie_weapons["svu_zm"].cost = cost;
-			level.zombie_weapons["svu_zm"].ammo_cost = int(cost / 2);
-		}
-		
-		if (isDefined(level.zombie_weapons["pdw57_zm"]))
-		{
-			cost = 1200;
-			level.zombie_weapons["pdw57_zm"].cost = cost;
-			level.zombie_weapons["pdw57_zm"].ammo_cost = int(cost / 2);
-		}
-		
-		if (isDefined(level.zombie_weapons["ak74u_zm"]))
-		{
-			cost = 1325;
-			level.zombie_weapons["ak74_zm"].cost = cost;
-			level.zombie_weapons["ak74_zm"].ammo_cost = int(cost / 2);
-		}
-		
-		if (isDefined(level.zombie_weapons["mp40_zm"]))
-		{
-			cost = 1325;
-			level.zombie_weapons["mp40_zm"].cost = cost;
-			level.zombie_weapons["mp40_zm"].ammo_cost = int(cost / 2);
-		}
-		
-		if (isDefined(level.zombie_weapons["m16_zm"]))
-		{
-			cost = 2000;
-			level.zombie_weapons["m16_zm"].cost = cost;
-			level.zombie_weapons["m16_zm"].ammo_cost = int(cost / 2);
+			self setweaponammoclip(weap, weaponclipsize(weap));
 		}
 	}
 }
