@@ -7,13 +7,13 @@
 
 init()
 {
-	level.inital_spawn = true;
+	level.initial_spawn = true;
 	thread onplayerconnect();
 }
 
 onplayerconnect()
 {
-	while(true)
+	while(1)
 	{
 		level waittill("connecting", player);
 		player thread onplayerspawned();
@@ -31,9 +31,9 @@ onplayerspawned()
 	{
 		self waittill( "spawned_player" );
 
-		if(level.inital_spawn)
+		if(level.initial_spawn)
 		{
-			level.inital_spawn = false;
+			level.initial_spawn = false;
 			level thread disable_bank();
 			level thread disable_pers_upgrades();
 		}
