@@ -11,7 +11,7 @@ Drag 'N' Drop install available here (Outdated until custom scripts execution ar
 If you want to test all the features added here, Then open Plutonium BO2 and join the following server: 
 
 **[EU Nordic] PotZombies: The Hardest Server_NOBANK**
-It's up almost 24/7
+Currently down for an unforseeable future
 
 
 # The two main goals of this fork:
