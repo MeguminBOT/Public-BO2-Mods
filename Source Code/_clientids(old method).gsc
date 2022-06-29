@@ -21,7 +21,6 @@ init()
 	level.playerDamageStub = level.callbackplayerdamage; 	// Callback
 	level.callbackplayerdamage = ::phd_flopper_dmg_check; 	// Callback
 	isTown();
-	thread high_round_tracker(); 							// Initialize Highest Round Tracker
     level thread drawZombiesCounter();						// Initialize Zombie Counter HUD Overlay
 	precacheshader("damage_feedback"); 						// Precache shader for Shield Durability HUD Overlay
 	precacheshader("zm_riotshield_tomb_icon"); 				// Precache shader for Shield Durability HUD Overlay
@@ -2449,67 +2448,6 @@ get_zone_name()
 	return name;
 }
 
-//// Round Record Tracker
-// NOTE: Needs gsc-utils.dll to be installed in ~\t6r\data\plugins to work
-// Credits to Cahz
-high_round_tracker()
-{
-	thread high_round_info_giver();
-	gamemode = gamemodeName( getDvar( "ui_gametype" ) );
-	map = mapName( level.script );
-	if( level.script == "zm_transit" && getDvar( "ui_gametype" ) == "zsurvival" )
-		map = startLocationName( getDvar( "ui_zm_mapstartlocation" ) );
-	//file handling//
-	level.basepath = getDvar("fs_basepath") + "/" + getDvar("fs_basegame") + "/";
-	path = level.basepath + "/logs/" + map + gamemode + "HighRound.txt";
-	file = fopen(path, "r");
-	text = fread(file);
-	fclose(file);
-	//end file handling//
-	highroundinfo = strToK( text, ";" );
-	level.HighRound = int( highroundinfo[ 0 ] );
-	level.HighRoundPlayers = highroundinfo[ 1 ];
-	for ( ;; )
-	{
-		level waittill ( "end_game" );
-		if ( level.round_number > level.HighRound )
-		{
-			level.HighRoundPlayers = "";
-			players = get_players();
-			for ( i = 0; i < players.size; i++ )
-			{
-				if( level.HighRoundPlayers == "" )
-				{
-					level.HighRoundPlayers = players[i].name;
-				}
-				else
-				{
-					level.HighRoundPlayers = level.HighRoundPlayers + "," + players[i].name;
-				}
-			}
-			foreach( player in level.players )
-			{
-				player tell( "New Record: ^1" + level.round_number );
-				player tell( "Set by: ^1" + level.HighRoundPlayers );
-			}
-			log_highround_record( level.round_number + ";" + level.HighRoundPlayers );
-		}
-	}
-}
-
-log_highround_record( newRecord )
-{
-	gamemode = gamemodeName( getDvar( "ui_gametype" ) );
-	map = mapName( level.script );
-	if( level.script == "zm_transit" && getDvar( "ui_gametype" ) == "zsurvival" )
-		map = startLocationName( getDvar( "ui_zm_mapstartlocation" ) );
-	level.basepath = getDvar("fs_basepath") + "/" + getDvar("fs_basegame") + "/";
-	path = level.basepath + "/logs/" + map + gamemode + "HighRound.txt";
-	file = fopen( path, "w" );
-	fputs( newRecord, file );
-	fclose( file );
-}
-
 startLocationName( location )
 {
 	if( location == "cornfield" )
@@ -2560,32 +2498,6 @@ gamemodeName( gamemode )
 	return "NA";
 }
 
-high_round_info_giver()
-{
-	highroundinfo = 1;
-	roundmultiplier = 5;
-	level endon( "end_game" );
-	while( 1 )
-	{	
-		level waittill( "start_of_round" );
-		if( level.round_number == ( highroundinfo * roundmultiplier ))
-		{
-			highroundinfo++;
-			foreach( player in level.players )
-			{
-				player tell( "Server Highest Round: ^1" + level.HighRound );
-				player tell( "Record set by: ^1" + level.HighRoundPlayers );
-			}
-		}
-	}
-}
-
-high_round_info()
-{
-	wait 6;
-	self tell( "Server Highest Round: ^1" + level.HighRound );
-	self tell( "Record set by: ^1" + level.HighRoundPlayers );
-}
 
 //// Removes annoying FOG. This is my personal preference since I get nauseous when theres fog and dof effects, not really sure why though.
 // Credits to teh-bandit
@@ -2726,34 +2638,6 @@ drop()
 	}
 }
 
-//// ** CURRENTLY DISABLED DUE TO BEING BUGGY**
-//// Adds the ability to inspect your weapon by holding down the "Use/Interact" button
-// Credits to teh-bandit
-//inspect()
-//{
-//	level endon("end_game");
-//	self endon("disconnect");
-//	for (;;) 
-//	{
-//		if (self usebuttonpressed()) 
-//		{
-//			duration = 0;
-//			while (self usebuttonpressed()) 
-//			{
-//				duration += 1;
-//				if (duration == 25) 
-//				{
-//					self initialweaponraise(self getcurrentweapon());
-//					break;
-//				}
-//				wait 0.05;
-//			}
-//		}
-//		wait 0.05;
-//	}
-//}
-
-
 //// Removes two super annoying things that usually kills you in later rounds. 
 // Credits to Jbleezy
 enable_friendly_fire()
@@ -2765,71 +2649,6 @@ disable_melee_lunge()
 {
 	setDvar( "aim_automelee_enabled", 0 );
 }
-
-// wallbuy_cost_changes()
-// {
-	// level endon("end_game");
-	// self endon("disconnect");
-	// for(;;)
-	// {
-		// if (isDefined(level.zombie_weapons["beretta93r_zm"]))
-		// {
-			// cost = 750;
-			// level.zombie_weapons["beretta93r_zm"].cost = cost;
-			// level.zombie_weapons["beretta93r_zm"].ammo_cost = int(cost / 2);
-		// }
-
-		// if (isDefined(level.zombie_weapons["870mcs_zm"]))
-		// {
-			// cost = 750;
-			// level.zombie_weapons["870mcs_zm"].cost = cost;
-			// level.zombie_weapons["870mcs_zm"].ammo_cost = int(cost / 2);
-		// }
-		
-		// if (isDefined(level.zombie_weapons["an94_zm"]))
-		// {
-			// cost = 2000;
-			// level.zombie_weapons["an94_zm"].cost = cost;
-			// level.zombie_weapons["an94_zm"].ammo_cost = int(cost / 2);
-		// }
-		
-		// if (isDefined(level.zombie_weapons["svu_zm"]))
-		// {
-			// cost = 3250;
-			// level.zombie_weapons["svu_zm"].cost = cost;
-			// level.zombie_weapons["svu_zm"].ammo_cost = int(cost / 2);
-		// }
-		
-		// if (isDefined(level.zombie_weapons["pdw57_zm"]))
-		// {
-			// cost = 1200;
-			// level.zombie_weapons["pdw57_zm"].cost = cost;
-			// level.zombie_weapons["pdw57_zm"].ammo_cost = int(cost / 2);
-		// }
-		
-		// if (isDefined(level.zombie_weapons["ak74u_zm"]))
-		// {
-			// cost = 1325;
-			// level.zombie_weapons["ak74_zm"].cost = cost;
-			// level.zombie_weapons["ak74_zm"].ammo_cost = int(cost / 2);
-		// }
-		
-		// if (isDefined(level.zombie_weapons["mp40_zm"]))
-		// {
-			// cost = 1325;
-			// level.zombie_weapons["mp40_zm"].cost = cost;
-			// level.zombie_weapons["mp40_zm"].ammo_cost = int(cost / 2);
-		// }
-		
-		// if (isDefined(level.zombie_weapons["m16_zm"]))
-		// {
-			// cost = 2000;
-			// level.zombie_weapons["m16_zm"].cost = cost;
-			// level.zombie_weapons["m16_zm"].ammo_cost = int(cost / 2);
-		// }
-	// }
-// }
-
 
 increaseZombiesLimit()
 {
