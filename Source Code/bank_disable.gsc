@@ -1,16 +1,19 @@
-﻿#include common_scripts\utility;
+﻿//Include the required libraries for your scripts.
+#include common_scripts\utility;
 #include maps\mp\_utility;
 #include maps\mp\gametypes_zm\_hud_util;
 #include maps\mp\gametypes_zm\_hud_message;
 #include maps\mp\zombies\_zm;
 #include maps\mp\zombies\_zm_utility;
 
+// Initialize the code
 init()
 {
 	level.initial_spawn = true;
 	thread onplayerconnect();
 }
 
+// Runs whenever a player connects
 onplayerconnect()
 {
 	while(1)
@@ -20,6 +23,7 @@ onplayerconnect()
 	}
 }
 
+// Runs whenever a player spawns
 onplayerspawned()
 {
 	level endon( "game_ended" );
@@ -48,6 +52,7 @@ onplayerspawned()
 	}
 }
 
+// Disables the money bank
 disable_bank()
 {
 	for(i = 0; i < level._unitriggers.trigger_stubs.size; i++)
@@ -70,12 +75,14 @@ disable_bank()
 	}
 }
 
+// Force set players money bank to 0 when connected to the server
 bank_clear_account_value()
 {
 	self.account_value = 0;
 	self maps/mp/zombies/_zm_stats::set_map_stat( "depositBox", player.account_value, level.banking_map );
 }
 
+// Disables weapon bank
 disable_weapon_locker()
 {
 	for(i = 0; i < level._unitriggers.trigger_stubs.size; i++)
@@ -90,6 +97,7 @@ disable_weapon_locker()
 	}
 }
 
+// Force clear players weapon bank when connected to the server
 weapon_locker_clear_stored_weapondata()
 {
 	if ( level.weapon_locker_online )
@@ -102,6 +110,7 @@ weapon_locker_clear_stored_weapondata()
 	}
 }
 
+// Disables perma perk upgrades
 disable_pers_upgrades()
 {
 	level waittill("initial_disable_player_pers_upgrades");
@@ -109,6 +118,7 @@ disable_pers_upgrades()
 	level.pers_upgrades = [];
 }
 
+// Force remove perma perks from players when connected to the server
 disable_player_pers_upgrades()
 {
 	flag_wait("initial_blackscreen_passed");
