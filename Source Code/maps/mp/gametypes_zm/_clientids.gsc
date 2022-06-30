@@ -230,6 +230,13 @@ init()
 	level.cmPlayerLaststandBleedoutTime = getDvarIntDefault( "cmPlayerLaststandBleedoutTime", 45 );
 	setdvar( "player_lastStandBleedoutTime", level.cmPlayerLaststandBleedoutTime );
 	
+	//change mystery box price
+	level.customMysteryBoxPriceEnabled = getDvarIntDefault( "customMysteryBoxPriceEnabled", 0 );
+	level.zombie_vars[ "customMysteryBoxPriceEnabled" ] = level.customMysteryBoxPriceEnabled;
+	//set mystery box price
+	level.customMysteryBoxPrice = getDvarIntDefault( "customMysteryBoxPrice", 950 );
+	level.zombie_vars[ "customMysteryBoxPrice" ] = level.customMysteryBoxPrice;
+
 	init_custom_zm_powerups_gsc_exclusive_dvars();
 	disable_specific_powerups();
 	checks();
@@ -305,6 +312,10 @@ checks()
 		}
 	}
 
+	if( level.customMysteryBoxPriceEnabled == 1) //custom mystery box price
+	{
+		level thread setMysteryBoxPrice();
+	}
 }
 
 disable_specific_powerups()
@@ -607,9 +618,16 @@ init_custom_zm_powerups_gsc_exclusive_dvars()
 	level.cmPowerupMaxAmmoAffectsLaststandPlayers = getDvarIntDefault( "cmPowerupMaxAmmoAffectsLastandPlayers", 0 );
 }
 
-
-
-
+setMysteryBoxPrice() //mystery box price
+{
+	i = 0;
+    while (i < level.chests.size)
+    {
+        level.chests[ i ].zombie_cost = level.customMysteryBoxPrice;
+        level.chests[ i ].old_cost = level.customMysteryBoxPrice;
+        i++;
+    }
+}
 
 
 

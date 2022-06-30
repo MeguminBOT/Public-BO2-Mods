@@ -1,63 +1,85 @@
-#include maps/mp/zombies/_zm_stats;
-#include maps/mp/_demo;
-#include maps/mp/zombies/_zm_audio;
-#include maps/mp/zombies/_zm_score;
-#include maps/mp/zombies/_zm_pers_upgrades_functions;
-#include maps/mp/zombies/_zm_audio_announcer;
-#include maps/mp/zombies/_zm_unitrigger;
-#include maps/mp/zombies/_zm_weapons;
-#include maps/mp/zombies/_zm_utility;
-#include maps/mp/_utility;
-#include common_scripts/utility;
-#include maps/mp/zombies/_zm_magicbox_lock;
-#include maps/mp/zombies/_zm_magicbox;
+#include common_scripts\utility;
+#include maps\mp\_utility;
+#include maps\mp\_demo;
+#include maps\mp\zombies\_zm_stats;
+#include maps\mp\zombies\_zm_audio;
+#include maps\mp\zombies\_zm_score;
+#include maps\mp\zombies\_zm_pers_upgrades_functions;
+#include maps\mp\zombies\_zm_audio_announcer;
+#include maps\mp\zombies\_zm_unitrigger;
+#include maps\mp\zombies\_zm_weapons;
+#include maps\mp\zombies\_zm_utility;
+#include maps\mp\zombies\_zm_magicbox_lock;
+#include maps\mp\zombies\_zm_magicbox;
 
-main()
+init()
 {
-	replaceFunc( maps/mp/zombies/_zm_magicbox::treasure_chest_init, ::treasure_chest_init_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::init_starting_chest_location, ::init_starting_chest_location_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::boxtrigger_update_prompt, ::boxtrigger_update_prompt_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::init_starting_chest_location, ::init_starting_chest_location_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::boxstub_update_prompt, ::boxstub_update_prompt_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::trigger_visible_to_player, ::trigger_visible_to_player_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::default_box_move_logic, ::default_box_move_logic_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::treasure_chest_move, ::treasure_chest_move_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::fire_sale_fix, ::fire_sale_fix_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::check_for_desirable_chest_location, ::check_for_desirable_chest_location_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::treasure_chest_timeout, ::treasure_chest_timeout_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::treasure_chest_canplayerreceiveweapon, ::treasure_chest_canplayerreceiveweapon_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::treasure_chest_chooseweightedrandomweapon, ::treasure_chest_chooseweightedrandomweapon_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::decide_hide_show_hint, ::decide_hide_show_hint_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::treasure_chest_weapon_spawn, ::treasure_chest_weapon_spawn_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::timer_til_despawn, ::timer_til_despawn_o );
-	replaceFunc( maps/mp/zombies/_zm_magicbox::treasure_chest_give_weapon, ::treasure_chest_give_weapon_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::treasure_chest_init, ::treasure_chest_init_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::init_starting_chest_location, ::init_starting_chest_location_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::boxtrigger_update_prompt, ::boxtrigger_update_prompt_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::init_starting_chest_location, ::init_starting_chest_location_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::boxstub_update_prompt, ::boxstub_update_prompt_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::trigger_visible_to_player, ::trigger_visible_to_player_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::default_box_move_logic, ::default_box_move_logic_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::treasure_chest_move, ::treasure_chest_move_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::fire_sale_fix, ::fire_sale_fix_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::check_for_desirable_chest_location, ::check_for_desirable_chest_location_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::treasure_chest_timeout, ::treasure_chest_timeout_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::treasure_chest_canplayerreceiveweapon, ::treasure_chest_canplayerreceiveweapon_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::treasure_chest_chooseweightedrandomweapon, ::treasure_chest_chooseweightedrandomweapon_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::decide_hide_show_hint, ::decide_hide_show_hint_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::treasure_chest_weapon_spawn, ::treasure_chest_weapon_spawn_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::timer_til_despawn, ::timer_til_despawn_o );
+	replaceFunc( maps\mp\zombies\_zm_magicbox::treasure_chest_give_weapon, ::treasure_chest_give_weapon_o );
 	level.bt_allow_dupes = getDvarIntDefault( "bt_allow_dupes", 1 );
+	level.zombie_vars[ "bt_allow_dupes"] = level.bt_allow_dupes;
 	level.bt_custom_weapon_list = "";
 	if ( getDvar( "bt_custom_weapon_list" ) != "" )
 	{
 		level.bt_custom_weapon_list = getDvar( "bt_custom_weapon_list" );
 	}
 	level.bt_all_active = getDvarIntDefault( "bt_all_active", 0 );
+	level.zombie_vars[ "bt_all_active"] = level.bt_all_active;
+
 	level.bt_share_allowed = getDvarIntDefault( "bt_share_allowed", 1 );
+	level.zombie_vars[ "bt_share_allowed"] = level.bt_share_allowed;
+
 	level.bt_box_start_locs = "";
 	if ( getDvar( "bt_box_start_locs" ) != "" )
 	{
 		level.bt_box_start_locs = getDvar( "bt_box_start_locs" );
 	}
 	level.bt_box_cost = getDvarIntDefault( "bt_box_cost", 1350 );
+	level.zombie_vars[ "bt_box_cost"] = level.bt_box_cost;
 	level.bt_box_summon = getDvarIntDefault( "bt_box_summon", 1 );
+	level.zombie_vars[ "bt_box_summon"] = level.bt_box_summon;
 	level.bt_box_summon_cost = getDvarIntDefault( "bt_box_summon_cost", 5000 );
+	level.zombie_vars[ "bt_box_summon_cost"] = level.bt_box_summon_cost;
 	level.bt_box_summon_max_hits = getDvarIntDefault( "bt_box_summon_max_hits", 4 );
+	level.zombie_vars[ "bt_box_summon_max_hits"] = level.bt_box_summon_max_hits;
 	level.bt_box_theft = getDvarIntDefault( "bt_box_theft", 1 );
+	level.zombie_vars[ "bt_box_theft"] = level.bt_box_theft;
 	level.bt_unlock_cost_motd = getDvarIntDefault( "bt_unlock_cost_motd", 2000 );
+	level.zombie_vars[ "bt_unlock_cost_motd"] = level.bt_unlock_cost_motd;
 	level.bt_emp = getDvarIntDefault( "bt_emp", 1 );
+	level.zombie_vars[ "bt_emp"] = level.bt_emp;
 	level.bt_can_move = getDvarIntDefault( "bt_can_move", 1 );
+	level.zombie_vars[ "bt_fire_sale_duration"] = level.bt_fire_sale_duration;
 	level.bt_fire_sale_duration = getDvarIntDefault( "bt_infinite_fire_sale", 30 );
+	level.zombie_vars[ "bt_fire_sale_duration"] = level.bt_fire_sale_duration;
 	level.bt_spin_time = getDvarIntDefault( "bt_spin_time", 3 );
+	level.zombie_vars[ "bt_spin_time"] = level.bt_spin_time;
 	level.bt_weapon_timeout = getDvarIntDefault( "bt_weapon_timeout", 10 );
+	level.zombie_vars[ "bt_weapon_timeout"] = level.bt_weapon_timeout;
 	level.bt_no_move_rng = getDvarIntDefault( "bt_no_move_rng", 0 );
-	level.bt_move_min = getDvarIntDefault( "bt_move_min", 4 );
-	level.bt_move_max = getDvarIntDefault( "bt_move_max", 99 );
+	level.zombie_vars[ "bt_no_move_rng"] = level.bt_no_move_rng;
+	level.bt_move_min = getDvarIntDefault( "bt_move_min", 3 );
+	level.zombie_vars[ "bt_move_min"] = level.bt_move_min;
+	level.bt_move_max = getDvarIntDefault( "bt_move_max", 9 );
+	level.zombie_vars[ "bt_move_max"] = level.bt_move_max;
+
+
+	thread treasure_chest_init_o();
 }
 
 treasure_chest_init_o( start_chest_name ) //checked changed to match cerberus output
@@ -82,7 +104,7 @@ treasure_chest_init_o( start_chest_name ) //checked changed to match cerberus ou
 		}
 		else 
 		{
-			level.chests[ i ].old_cost = 950;
+			level.chests[ i ].old_cost = 1350;
 		}
 	}
 	if ( !level.enable_magic )
@@ -341,7 +363,7 @@ treasure_chest_think_o() //checked changed to match cerberus output
 			continue;
 		}
 		reduced_cost = undefined;
-		if ( is_player_valid( user ) && user maps/mp/zombies/_zm_pers_upgrades_functions::is_pers_double_points_active() )
+		if ( is_player_valid( user ) && user maps\mp\zombies\_zm_pers_upgrades_functions::is_pers_double_points_active() )
 		{
 			reduced_cost = int( self.zombie_cost / 2 );
 		}
@@ -349,13 +371,13 @@ treasure_chest_think_o() //checked changed to match cerberus output
 		{
 			if ( user.score >= level.locked_magic_box_cost )
 			{
-				user maps/mp/zombies/_zm_score::minus_to_player_score( level.locked_magic_box_cost );
+				user maps\mp\zombies\_zm_score::minus_to_player_score( level.locked_magic_box_cost );
 				self.zbarrier set_magic_box_zbarrier_state( "unlocking" );
 				self.unitrigger_stub run_visibility_function_for_all_triggers();
 			}
 			else
 			{
-				user maps/mp/zombies/_zm_audio::create_and_play_dialog( "general", "no_money_box" );
+				user maps\mp\zombies\_zm_audio::create_and_play_dialog( "general", "no_money_box" );
 			}
 			wait 0.1 ;
 			continue;
@@ -364,7 +386,7 @@ treasure_chest_think_o() //checked changed to match cerberus output
 		{
 			if ( !isdefined( self.no_charge ) )
 			{
-				user maps/mp/zombies/_zm_score::minus_to_player_score( self.zombie_cost );
+				user maps\mp\zombies\_zm_score::minus_to_player_score( self.zombie_cost );
 				user_cost = self.zombie_cost;
 			}
 			else
@@ -376,14 +398,14 @@ treasure_chest_think_o() //checked changed to match cerberus output
 		}
 		else if ( is_player_valid( user ) && user.score >= self.zombie_cost )
 		{
-			user maps/mp/zombies/_zm_score::minus_to_player_score( self.zombie_cost );
+			user maps\mp\zombies\_zm_score::minus_to_player_score( self.zombie_cost );
 			user_cost = self.zombie_cost;
 			self.chest_user = user;
 			break;
 		}
 		else if ( isdefined( reduced_cost ) && user.score >= reduced_cost )
 		{
-			user maps/mp/zombies/_zm_score::minus_to_player_score( reduced_cost );
+			user maps\mp\zombies\_zm_score::minus_to_player_score( reduced_cost );
 			user_cost = reduced_cost;
 			self.chest_user = user;
 			break;
@@ -391,16 +413,16 @@ treasure_chest_think_o() //checked changed to match cerberus output
 		else if ( user.score < self.zombie_cost )
 		{
 			play_sound_at_pos( "no_purchase", self.origin );
-			user maps/mp/zombies/_zm_audio::create_and_play_dialog( "general", "no_money_box" );
+			user maps\mp\zombies\_zm_audio::create_and_play_dialog( "general", "no_money_box" );
 			wait 0.1;
 			continue;
 		}
 		wait 0.05;
 	}
 	flag_set( "chest_has_been_used" );
-	maps/mp/_demo::bookmark( "zm_player_use_magicbox", getTime(), user );
-	user maps/mp/zombies/_zm_stats::increment_client_stat( "use_magicbox" );
-	user maps/mp/zombies/_zm_stats::increment_player_stat( "use_magicbox" );
+	maps\mp\_demo::bookmark( "zm_player_use_magicbox", getTime(), user );
+	user maps\mp\zombies\_zm_stats::increment_client_stat( "use_magicbox" );
+	user maps\mp\zombies\_zm_stats::increment_player_stat( "use_magicbox" );
 	if ( isDefined( level._magic_box_used_vo ) )
 	{
 		user thread [[ level._magic_box_used_vo ]]();
@@ -408,7 +430,7 @@ treasure_chest_think_o() //checked changed to match cerberus output
 	self thread watch_for_emp_close();
 	if ( is_true( level.using_locked_magicbox ) )
 	{
-		self thread maps/mp/zombies/_zm_magicbox_lock::watch_for_lock();
+		self thread maps\mp\zombies\_zm_magicbox_lock::watch_for_lock();
 	}
 	self._box_open = 1;
 	self._box_opened_by_fire_sale = 0;
@@ -430,11 +452,11 @@ treasure_chest_think_o() //checked changed to match cerberus output
 	self.weapon_out = 1;
 	self.zbarrier thread treasure_chest_weapon_spawn_o( self, user );
 	self.zbarrier thread treasure_chest_glowfx();
-	thread maps/mp/zombies/_zm_unitrigger::unregister_unitrigger( self.unitrigger_stub );
+	thread maps\mp\zombies\_zm_unitrigger::unregister_unitrigger( self.unitrigger_stub );
 	self.zbarrier waittill_any( "randomization_done", "box_hacked_respin" );
 	if ( flag( "moving_chest_now" ) && !self._box_opened_by_fire_sale && isDefined( user_cost ) )
 	{
-		user maps/mp/zombies/_zm_score::add_to_player_score( user_cost, 0 );
+		user maps\mp\zombies\_zm_score::add_to_player_score( user_cost, 0 );
 	}
 	if ( flag( "moving_chest_now" ) && !level.zombie_vars[ "zombie_powerup_fire_sale_on" ] && !self._box_opened_by_fire_sale )
 	{
@@ -445,7 +467,7 @@ treasure_chest_think_o() //checked changed to match cerberus output
 		self.grab_weapon_hint = 1;
 		self.grab_weapon_name = self.zbarrier.weapon_string;
 		self.chest_user = user;
-		thread maps/mp/zombies/_zm_unitrigger::register_static_unitrigger( self.unitrigger_stub, ::magicbox_unitrigger_think );
+		thread maps\mp\zombies\_zm_unitrigger::register_static_unitrigger( self.unitrigger_stub, ::magicbox_unitrigger_think );
 		if ( isDefined( self.zbarrier ) && !is_true( self.zbarrier.closed_by_emp ) )
 		{
 			self thread treasure_chest_timeout_o();
@@ -463,7 +485,7 @@ treasure_chest_think_o() //checked changed to match cerberus output
 			}
 			if ( is_true( level.pers_upgrade_box_weapon ) )
 			{
-				self maps/mp/zombies/_zm_pers_upgrades_functions::pers_upgrade_box_weapon_used( user, grabber );
+				self maps\mp\zombies\_zm_pers_upgrades_functions::pers_upgrade_box_weapon_used( user, grabber );
 			}
 			if ( isDefined( grabber.is_drinking ) && grabber.is_drinking > 0 )
 			{
@@ -493,9 +515,9 @@ treasure_chest_think_o() //checked changed to match cerberus output
 					self notify( "user_grabbed_weapon" );
 					user notify( "user_grabbed_weapon" );
 					user thread treasure_chest_give_weapon( self.zbarrier.weapon_string );
-					maps/mp/_demo::bookmark( "zm_player_grabbed_magicbox", getTime(), user );
-					user maps/mp/zombies/_zm_stats::increment_client_stat( "grabbed_from_magicbox" );
-					user maps/mp/zombies/_zm_stats::increment_player_stat( "grabbed_from_magicbox" );
+					maps\mp\_demo::bookmark( "zm_player_grabbed_magicbox", getTime(), user );
+					user maps\mp\zombies\_zm_stats::increment_client_stat( "grabbed_from_magicbox" );
+					user maps\mp\zombies\_zm_stats::increment_player_stat( "grabbed_from_magicbox" );
 					break;
 				}
 				else if ( grabber == level )
@@ -525,7 +547,7 @@ treasure_chest_think_o() //checked changed to match cerberus output
 		{
 			level.pulls_since_last_tesla_gun += 1;
 		}
-		thread maps/mp/zombies/_zm_unitrigger::unregister_unitrigger( self.unitrigger_stub );
+		thread maps\mp\zombies\_zm_unitrigger::unregister_unitrigger( self.unitrigger_stub );
 		if ( isDefined( self.chest_lid ) )
 		{
 			self.chest_lid thread treasure_chest_lid_close( self.timedout );
@@ -543,7 +565,7 @@ treasure_chest_think_o() //checked changed to match cerberus output
 		}
 		if ( is_true( level.zombie_vars[ "zombie_powerup_fire_sale_on" ] ) || self [[ level._zombiemode_check_firesale_loc_valid_func ]]() || self == level.chests[ level.chest_index ] )
 		{
-			thread maps/mp/zombies/_zm_unitrigger::register_static_unitrigger( self.unitrigger_stub, ::magicbox_unitrigger_think );
+			thread maps\mp\zombies\_zm_unitrigger::register_static_unitrigger( self.unitrigger_stub, ::magicbox_unitrigger_think );
 		}
 	}
 	self._box_open = 0;
@@ -832,7 +854,7 @@ treasure_chest_weapon_spawn_o( chest, player, respin ) //checked changed to matc
 	if ( is_true( level.using_locked_magicbox ) )
 	{
 		self.owner endon( "box_locked" );
-		self thread maps/mp/zombies/_zm_magicbox_lock::clean_up_locked_box();
+		self thread maps\mp\zombies\_zm_magicbox_lock::clean_up_locked_box();
 	}
 	self endon( "box_hacked_respin" );
 	self thread clean_up_hacked_box();
@@ -881,7 +903,7 @@ treasure_chest_weapon_spawn_o( chest, player, respin ) //checked changed to matc
 	}
 	if ( is_true( player.pers_upgrades_awarded[ "box_weapon" ] ) )
 	{
-		rand = maps/mp/zombies/_zm_pers_upgrades_functions::pers_treasure_chest_choosespecialweapon( player );
+		rand = maps\mp\zombies\_zm_pers_upgrades_functions::pers_treasure_chest_choosespecialweapon( player );
 	}
 	else
 	{
@@ -1096,5 +1118,5 @@ timer_til_despawn_o( v_float ) //checked matches cerberus output
 treasure_chest_give_weapon_o( weapon_string ) //checked matches cerberus output
 {
 	self.last_box_weapon = getTime();
-	self maps/mp/zombies/_zm_weapons::weapon_give( weapon_string, 0, 1 );
+	self maps\mp\zombies\_zm_weapons::weapon_give( weapon_string, 0, 1 );
 }

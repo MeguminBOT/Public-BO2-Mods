@@ -31,20 +31,14 @@
 #include scripts/zm/_weapons;
 
 
-main()
+init()
 { 
-	level.VERSION = "2.0";
-
 	replaceFunc( maps/mp/zombies/_zm_weapons::weapon_give, ::weapon_give_override );
 	replaceFunc( maps/mp/zombies/_zm_weapons::get_pack_a_punch_weapon_options, ::get_pack_a_punch_weapon_options_override );
 	replaceFunc( maps/mp/zombies/_zm_weapons::ammo_give, ::ammo_give_override );	
 	
     level.initial_spawn = true;
     level thread onConnect();
-}
-
-init()
-{
 }
 
 onConnect()
@@ -71,13 +65,6 @@ connected()
 		{
             self.initial_spawn = false;
 
-			self iprintln("Welcome to PotZombies!");
-			self iprintln("A Harder zombie experience");
-			self iPrintLn("Version " + level.VERSION);
-
-			// _vision.gsc
-			self graphic_tweaks();
-
 			// _hud.gsc
 	    	self thread timer_hud();
 			self thread health_bar_hud();
@@ -91,15 +78,17 @@ connected()
 			self thread carpenter_repair_shield();
 
 			// _perks.gsc
-			increase_perk_limit();
+			self increase_perk_limit();
 			self thread quickrevive_tweaks();
 			self thread staminup_tweaks();
 			self thread speedcola_tweaks();
 
-			// _characters.gsc
-			setlatepoints();
-			enable_friendly_fire();
-			disable_melee_lunge();
+			// _player.gsc
+			self thread setlatepoints();
+			self enable_friendly_fire();
+			self disable_melee_lunge();
+			self thread drop();		
+
         }
 
         if(level.initial_spawn)
@@ -111,9 +100,23 @@ connected()
 
 			//_weapons.gsc
 			wallbuy_increase_trigger_radius();
-			level thread wallbuy_dynamic_increase_trigger_radius();
+			wallbuy_dynamic_increase_trigger_radius();
 
-
+			wait 6;
+			self iprintln("Welcome to PotZombies!" );
+			self iprintln("A Harder and more classic zombie experience");
+			wait 2;
+			self iprintln("Major features/changes include:");
+			wait 2;
+			self iprintln("Bank is disabled");
+			self iprintln("Weapon Locker is disabled");
+			self iprintln("Perma Upgrades are disabled");
+			wait 2;
+			self iprintln("Fog effects disabled");
+			self iprintln("HUD Elements: Health, Shield, Zone, Timer, Zombie Counter and Hitmarkers");
+			wait 2;
+			self iprintln("Added Deadshot, PHD Flopper, StaminUp, Mule Kick perks to most maps");
+			self iprintln("Weapons can be dropped by holding down Melee Button");
 		}
 	}
 }

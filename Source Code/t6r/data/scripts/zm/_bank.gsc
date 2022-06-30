@@ -5,6 +5,10 @@
 #include maps\mp\gametypes_zm\_hud_message;
 #include maps\mp\zombies\_zm;
 #include maps\mp\zombies\_zm_utility;
+#include maps\mp\zombies\_zm_unitrigger;
+#include maps\mp\zombies\_zm_pers_upgrades_system;
+#include maps\mp\zombies\_zm_pers_upgrades_functions;
+#include maps\mp\zombies\_zm_stats;
 
 // Initialize the code
 init()
@@ -61,7 +65,7 @@ disable_bank()
 		{
 			if(level._unitriggers.trigger_stubs[i].targetname == "bank_deposit" || level._unitriggers.trigger_stubs[i].targetname == "bank_withdraw")
 			{
-				maps/mp/zombies/_zm_unitrigger::unregister_unitrigger( level._unitriggers.trigger_stubs[i] );
+				maps\mp\zombies\_zm_unitrigger::unregister_unitrigger( level._unitriggers.trigger_stubs[i] );
 			}
 		}
 	}
@@ -79,7 +83,7 @@ disable_bank()
 bank_clear_account_value()
 {
 	self.account_value = 0;
-	self maps/mp/zombies/_zm_stats::set_map_stat( "depositBox", player.account_value, level.banking_map );
+	self maps\mp\zombies\_zm_stats::set_map_stat( "depositBox", player.account_value, level.banking_map );
 }
 
 // Disables weapon bank
@@ -91,7 +95,7 @@ disable_weapon_locker()
 		{
 			if(level._unitriggers.trigger_stubs[i].targetname == "weapon_locker")
 			{
-				maps/mp/zombies/_zm_unitrigger::unregister_unitrigger( level._unitriggers.trigger_stubs[i] );
+				maps\mp\zombies\_zm_unitrigger::unregister_unitrigger( level._unitriggers.trigger_stubs[i] );
 			}
 		}
 	}
@@ -102,7 +106,7 @@ weapon_locker_clear_stored_weapondata()
 {
 	if ( level.weapon_locker_online )
 	{
-		self maps/mp/zombies/_zm_stats::clear_stored_weapondata( level.weapon_locker_map );
+		self maps\mp\zombies\_zm_stats::clear_stored_weapondata( level.weapon_locker_map );
 	}
 	else
 	{
@@ -121,7 +125,6 @@ disable_pers_upgrades()
 // Force remove perma perks from players when connected to the server
 disable_player_pers_upgrades()
 {
-	flag_wait("initial_blackscreen_passed");
 	if (isDefined(self.pers_upgrades_awarded))
 	{
 		upgrade = getFirstArrayKey(self.pers_upgrades_awarded);
@@ -140,7 +143,7 @@ disable_player_pers_upgrades()
 			stat_index = 0;
 			while (stat_index < level.pers_upgrades[str_name].stat_names.size)
 			{
-				self maps/mp/zombies/_zm_stats::zero_client_stat(level.pers_upgrades[str_name].stat_names[stat_index], 0);
+				self maps\mp\zombies\_zm_stats::zero_client_stat(level.pers_upgrades[str_name].stat_names[stat_index], 0);
 				stat_index++;
 			}
 			index++;
