@@ -81,7 +81,7 @@ startCustomPerkMachines()
 		// 		level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_doubletap2", "Stamin-Up", 2000, (-638, 268, -54), "specialty_longersprint", (0, 165, 0) );
 		// 	if(level.enableMuleKick == 1)
 		// 		level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_sleight", "Mule Kick", 3000, (-953, 715, 83), "specialty_additionalprimaryweapon", (0, 75, 0) );
-		}
+		//}
 		else if(getDvar("mapname") == "zm_transit") //transit
 		{
 			if(level.enablePHDFlopper == 1)
