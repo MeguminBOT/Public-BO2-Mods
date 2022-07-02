@@ -1,4 +1,7 @@
-﻿//// Include the required libraries for your scripts.
+﻿//Script by Cahz
+//https://forum.plutonium.pw/topic/1005/release-zm-zombies?_=1656770409483
+
+//// Include the required libraries for your scripts.
 #include common_scripts\utility;
 #include maps\mp\_utility;
 #include maps\mp\gametypes_zm\_hud_util;
@@ -68,16 +71,16 @@ startCustomPerkMachines()
 			if(level.enableDeadshot == 1)
 				level thread CustomPerkMachine( "zombie_perk_bottle_marathon", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (1055.18, -1055.55, 201), "specialty_deadshot", (3, 270, 0) );
 		}
-		else if(getDvar("mapname") == "zm_nuked") //nuketown
-		{
-			if(level.enablePHDFlopper == 1)
-				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_jugg", "PHD Flopper", 3000, (683, 727, -56), "PHD_FLOPPER", (5, 250, 0) );
-			if(level.enableDeadshot == 1)
-				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (747, 356, 91), "specialty_deadshot", (0, 330, 0) );
-			if(level.enableStaminUp == 1)
-				level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_doubletap2", "Stamin-Up", 2000, (-638, 268, -54), "specialty_longersprint", (0, 165, 0) );
-			if(level.enableMuleKick == 1)
-				level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_sleight", "Mule Kick", 3000, (-953, 715, 83), "specialty_additionalprimaryweapon", (0, 75, 0) );
+		// else if(getDvar("mapname") == "zm_nuked") //nuketown
+		// {
+		// 	if(level.enablePHDFlopper == 1)
+		// 		level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_jugg", "PHD Flopper", 3000, (683, 727, -56), "PHD_FLOPPER", (5, 250, 0) );
+		// 	if(level.enableDeadshot == 1)
+		// 		level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_revive", "Deadshot Daiquiri", 1500, (747, 356, 91), "specialty_deadshot", (0, 330, 0) );
+		// 	if(level.enableStaminUp == 1)
+		// 		level thread CustomPerkMachine( "zombie_perk_bottle_revive", "zombie_vending_doubletap2", "Stamin-Up", 2000, (-638, 268, -54), "specialty_longersprint", (0, 165, 0) );
+		// 	if(level.enableMuleKick == 1)
+		// 		level thread CustomPerkMachine( "zombie_perk_bottle_jugg", "zombie_vending_sleight", "Mule Kick", 3000, (-953, 715, 83), "specialty_additionalprimaryweapon", (0, 75, 0) );
 		}
 		else if(getDvar("mapname") == "zm_transit") //transit
 		{

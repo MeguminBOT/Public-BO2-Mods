@@ -1,3 +1,6 @@
+//Script by GerardS0406
+//https://forum.plutonium.pw/topic/1822/release-zombies-wunderfizz-script-all-maps
+
 #include maps\mp\zombies\_zm_utility;
 #include maps\mp\_utility;
 #include common_scripts\utility;

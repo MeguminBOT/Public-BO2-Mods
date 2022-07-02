@@ -102,21 +102,30 @@ connected()
 			wallbuy_increase_trigger_radius();
 			wallbuy_dynamic_increase_trigger_radius();
 
-			wait 6;
+			wait 10;
 			self iprintln("Welcome to PotZombies!" );
 			self iprintln("A Harder and more classic zombie experience");
-			wait 2;
 			self iprintln("Major features/changes include:");
-			wait 2;
+			wait 3;
 			self iprintln("Bank is disabled");
 			self iprintln("Weapon Locker is disabled");
 			self iprintln("Perma Upgrades are disabled");
-			wait 2;
-			self iprintln("Fog effects disabled");
-			self iprintln("HUD Elements: Health, Shield, Zone, Timer, Zombie Counter and Hitmarkers");
-			wait 2;
-			self iprintln("Added Deadshot, PHD Flopper, StaminUp, Mule Kick perks to most maps");
+			wait 3;
+			self iprintln("More zombies");
+			self iprintln("Zombies spawn faster and moves faster");
+			self iprintln("Points earned has been massively tweaked");
+			wait 3;
+			self iprintln("Added perk: Deadshot Daiquiri on Buried and Tranzit");
+			self iprintln("Added perk: PHD Flopper on Mob of the Dead, Die Rise, Buried and Tranzit");
+			self iprintln("Added Wunderfizz machine on all maps");
+			wait 3;
+			self iprintln("Mystery Box now costs 1375");
+			self iprintln("Wunderfizz now costs 3000");
 			self iprintln("Weapons can be dropped by holding down Melee Button");
+			wait 3;
+			self iprintln("Health set to 190, this allows you to take one extra hit");
+			self iprintln("Stamin Up, Speed Cola and Quick Revive has additional effects");
+			self iprintln("Fog disabled");
 		}
 	}
 }

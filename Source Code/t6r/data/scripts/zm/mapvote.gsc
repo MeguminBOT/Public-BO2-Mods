@@ -44,7 +44,7 @@ mv_Config()
 	level.__mapvote = [];
 	SetDvarIfNotInizialized("mv_time", 20);
 	level.__mapvote["time"] = getDvarInt("mv_time");
-	SetDvarIfNotInizialized("mv_maps", "zm_tomb zm_buried zm_transit zm_prison zm_highrise zm_nuked");
+	SetDvarIfNotInizialized("mv_maps", "zm_tomb zm_buried zm_transit zm_prison zm_highrise");
 
 	// PreCache maps images
 	mapsIDs = [];
