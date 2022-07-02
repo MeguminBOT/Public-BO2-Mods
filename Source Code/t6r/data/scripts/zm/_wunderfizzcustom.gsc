@@ -19,20 +19,7 @@ setupWunderfizz()
 		level.currentWunderfizzLocation = 0;
 	else
 		level.currentWunderfizzLocation = 1;
-	if(level.script == "zm_tomb")
-    {
-		level._effect[ "wunderfizz_loop" ] = loadfx( "maps/zombie_tomb/fx_tomb_dieselmagic_on" );
-		wunderfizzSetup((2468,4459,-316), (0,180,0), "p6_zm_vending_diesel_magic");
-		//DO NOT TOUCH BELOW IF YOU DON'T KNOW WHAT YOU'RE DOING
-		if(wunderfizzUseRandomStart)
-		{
-			level waittill("connected", player);
-			wait 1;
-			level.currentWunderfizzLocation = chooseLocation(level.currentWunderfizzLocation);
-			level notify("wunderfizzMove");
-		}
-    }
-    else if(level.script == "zm_nuked")
+    if(level.script == "zm_nuked")
     {
     	wunderfizzSetup((-649,281,-56), (0,162,0), "zombie_vending_jugg");
     	wunderfizzSetup((-915,286,-56), (0,66,0), "zombie_vending_jugg");
@@ -339,88 +326,47 @@ wunderfizz(origin, angles, model, cost, perks, trig, wunderfizzBottle )
 									perkForRandom = perks[randomInt(perks.size)];
 									if(!(player hasPerk(perkForRandom) || (player maps/mp/zombies/_zm_perks::has_perk_paused(perkForRandom))))
 									{
-										if(level.script == "zm_tomb")
-										{
-											self.bottle setModel(getPerkBottleModel(perkForRandom));
-											break;
-										}
-										else
-										{
-											self setModel(getPerkModel(perkForRandom));
-											break;
-										}
+                                        self setModel(getPerkModel(perkForRandom));
+                                        break;
 									}
 								}
-								if(level.script == "zm_tomb")
-								{
-									TriggerFX(wunderfx);
-									wait .2;
-									rtime -= .2;
-								}
-								else
-								{
-									wait .1;
-									rtime -= .1;
-								}
+								wait .1;
+								rtime -= .1;
 							}
 							self notify( "done_cycling" );
 							if((self.uses >= RandomIntRange(3,7)) && (level.wunderfizz_locations > 1))
 							{
-								if(level.script == "zm_tomb")
-								{
-									self.bottle setModel("t6_wpn_zmb_perk_bottle_bear_world");
-									if(level.script != "zm_tomb")
-										self setModel("zombie_teddybear");
-									level notify("wunderSpinStop");
-									wunderfx Delete();
-									wait 7;
-									self.bottle setModel("tag_origin");
-									level.currentWunderfizzLocation = chooseLocation(level.currentWunderfizzLocation);
-									level notify("wunderfizzMove");
-									self setModel(model);
-									self.uses = 0;
-									break;
-								}
-								else{
-									self setModel("zombie_teddybear");
-									self.angles = angles + (0,-90,0);
-									wunderfx Delete();
-									trig SetHintString("Wunderfizz is Moving");
-									wait 7;
-									level.currentWunderfizzLocation = chooseLocation(level.currentWunderfizzLocation);
-									level notify("wunderfizzMove");
-									self.angles = angles;
-									self setModel(model);
-									self.uses = 0;
-									break;
-								}
+                                self setModel("zombie_teddybear");
+                                self.angles = angles + (0,-90,0);
+                                wunderfx Delete();
+                                trig SetHintString("Wunderfizz is Moving");
+                                wait 7;
+                                level.currentWunderfizzLocation = chooseLocation(level.currentWunderfizzLocation);
+                                level notify("wunderfizzMove");
+                                self.angles = angles;
+                                self setModel(model);
+                                self.uses = 0;
+                                break;
 							}
-							else{
+							else
+                            {
 								perklist = array_randomize(perks);
 								for(j=0;j<perklist.size;j++)
 								{
 									if(!(player hasPerk(perklist[j]) || (self maps/mp/zombies/_zm_perks::has_perk_paused(perklist[j]))))
 									{
 										perkName = getPerkName(perklist[j]);
-										if(level.script == "zm_tomb")
-										{
-											self.bottle setModel(getPerkBottleModel(perklist[j]));
-
-										}
-										else
-										{
-											if(level.script == "zm_prison")
-											{
-												self setModel(getPerkModel(perklist[j]));
-												fx = SpawnFX(level._effect["electriccherry"], origin, AnglesToForward(angles),AnglesToUp(angles));
-											}
-											else
-											{
-												self setModel(getPerkModel(perklist[j]) + "_on");
-												fx = SpawnFX(level._effect["tombstone_light"], origin, AnglesToForward(angles),AnglesToUp(angles));
-											}
-											TriggerFX(fx);
-										}
+                                        if(level.script == "zm_prison")
+                                        {
+                                            self setModel(getPerkModel(perklist[j]));
+                                            fx = SpawnFX(level._effect["electriccherry"], origin, AnglesToForward(angles),AnglesToUp(angles));
+                                        }
+                                        else
+                                        {
+                                            self setModel(getPerkModel(perklist[j]) + "_on");
+                                            fx = SpawnFX(level._effect["tombstone_light"], origin, AnglesToForward(angles),AnglesToUp(angles));
+                                        }
+                                        TriggerFX(fx);
 										trig SetHintString("Hold ^3&&1^7 for " + perkName);
 										time = 7;
 										while(time > 0)
